@@ -102,6 +102,44 @@ export interface WorkflowStep {
   threshold: number; // Montant min pour déclencher cette étape
 }
 
+export interface BudgetProposal {
+  id: string;
+  title: string;
+  desc: string;
+  author: string;
+  budgetedAmt: number;
+  votes: number;
+  date: string;
+}
+
+export interface CostRecommendation {
+  id: string;
+  category: string;
+  potentialSaving: number;
+  desc: string;
+  impact: 'low' | 'medium' | 'high';
+}
+
+export interface AutonomousStrategy {
+  status: 'idle' | 'optimizing' | 'completed';
+  lastRun: string;
+  recommendations: string[];
+  projectedEfficiency: number;
+}
+
+export interface KGNode {
+  id: string;
+  label: string;
+  type: 'service' | 'budget_line' | 'revenue';
+  val: number;
+}
+
+export interface KGEdge {
+  source: string;
+  target: string;
+  weight: number;
+}
+
 interface BudgetContextType {
   budgetLines: BudgetLine[];
   engagements: Engagement[];
@@ -134,6 +172,13 @@ interface BudgetContextType {
   connectors: Connector[];
   addScenario: (name: string, adjustments: { [key: string]: number }) => void;
   deleteScenario: (id: string) => void;
+  proposals: BudgetProposal[];
+  addProposal: (proposal: Omit<BudgetProposal, 'id' | 'votes' | 'date'>) => void;
+  voteProposal: (id: string) => void;
+  costRecommendations: CostRecommendation[];
+  deepMind: AutonomousStrategy;
+  kgData: { nodes: KGNode[], edges: KGEdge[] };
+  runDeepMindOptimization: () => void;
 }
 
 const BudgetContext = createContext<BudgetContextType | undefined>(undefined);
@@ -169,6 +214,40 @@ export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) =>
     { id: 'CON-1', name: 'Banque Centrale / Trésor', status: 'connected', lastSync: '13/04/2026 09:00', type: 'treasury' },
     { id: 'CON-2', name: 'Système Paie (HR-Pro)', status: 'disconnected', lastSync: '10/04/2026 18:30', type: 'hr' }
   ]);
+
+  const [proposals, setProposals] = useState<BudgetProposal[]>([
+    { id: 'PRP-001', title: 'Flotte Véhicules Électriques', desc: 'Transition vers l\'électrique pour les coursiers du siège.', author: 'Service Logistique', budgetedAmt: 35000000, votes: 12, date: '10/04/2026' },
+    { id: 'PRP-002', title: 'Installation Solaire Toitures', desc: 'Réduction de 25% de la facture énergétique annuelle.', author: 'Services Techniques', budgetedAmt: 50000000, votes: 24, date: '08/04/2026' }
+  ]);
+
+  const [costRecommendations] = useState<CostRecommendation[]>([
+    { id: 'OPT-1', category: 'Télécoms', potentialSaving: 4500000, desc: 'Mutualisation des liens fibre entre filiales.', impact: 'medium' },
+    { id: 'OPT-2', category: 'Cloud/SaaS', potentialSaving: 12000000, desc: 'Consolidation des licences Oracle inactives.', impact: 'high' }
+  ]);
+
+  const [deepMind, setDeepMind] = useState<AutonomousStrategy>({
+    status: 'idle',
+    lastRun: '13/04/2026',
+    recommendations: [
+      'Arbitrage suggéré : -5% sur Frais Déplacement vers Investissement Matériel.',
+      'Ajustement prédictif : Hausse de 10% des recettes hospitalières attendue via IA.'
+    ],
+    projectedEfficiency: 8.5
+  });
+
+  const [kgData] = useState({
+    nodes: [
+      { id: 'S1', label: 'Urgences', type: 'service' as const, val: 80 },
+      { id: 'S2', label: 'Radiologie', type: 'service' as const, val: 60 },
+      { id: 'B1', label: 'Ligne 601', type: 'budget_line' as const, val: 40 },
+      { id: 'R1', label: 'Recettes Propres', type: 'revenue' as const, val: 90 }
+    ],
+    edges: [
+      { source: 'S1', target: 'S2', weight: 0.8 },
+      { source: 'S2', target: 'B1', weight: 0.5 },
+      { source: 'S1', target: 'R1', weight: 0.9 }
+    ]
+  });
 
   const dictionary = {
     entreprise: {
@@ -346,10 +425,39 @@ export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) =>
     setScenarios(scenarios.filter(s => s.id !== id));
   };
 
+  const addProposal = (prop: Omit<BudgetProposal, 'id' | 'votes' | 'date'>) => {
+    const newId = `PRP-${Math.floor(Math.random() * 1000)}`;
+    setProposals([{ ...prop, id: newId, votes: 0, date: new Date().toLocaleDateString('fr-FR') }, ...proposals]);
+    addLog('Mamadou Dia (DSI)', 'PROPOSITION_BUDGET', 'Budget Participatif', `Nouveau projet déposé : ${prop.title}`);
+  };
+
+  const voteProposal = (id: string) => {
+    setProposals(prev => prev.map(p => p.id === id ? { ...p, votes: p.votes + 1 } : p));
+  };
+
+  const runDeepMindOptimization = () => {
+    setDeepMind(prev => ({ ...prev, status: 'optimizing' }));
+    setTimeout(() => {
+      setDeepMind(prev => ({ 
+        ...prev, 
+        status: 'completed', 
+        lastRun: new Date().toLocaleDateString('fr-FR'),
+        projectedEfficiency: prev.projectedEfficiency + 1.2
+      }));
+      addLog('AlphaBudget Core', 'IA_OPTIMIZATION', 'DeepMind', 'Optimisation par renforcement terminée avec succès.');
+    }, 4000);
+  };
+
   return (
+    <BudgetContext.Provider value={{
+      budgetLines, engagements, dbms, recettes, auditLogs, documents, industryMode,
+      setIndustryMode, updateBudgetLine, addEngagement, updateEngagementStatus, addDBM, approveDBM,
+      addRecette, updateRecetteStatus, addDocument, simulateDocAnalysis, t,
       workflowSteps, updateWorkflowThreshold, getNextStep,
       assets, addAsset, amortizationMethod, setAmortizationMethod, getForecast,
-      anomalies, scenarios, connectors, addScenario, deleteScenario
+      anomalies, scenarios, connectors, addScenario, deleteScenario,
+      proposals, addProposal, voteProposal, costRecommendations,
+      deepMind, kgData, runDeepMindOptimization
     }}>
       {children}
     </BudgetContext.Provider>

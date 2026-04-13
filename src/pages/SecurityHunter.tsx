@@ -123,6 +123,31 @@ const SecurityHunter: React.FC = () => {
         </div>
       </div>
 
+      <div className="glass-panel" style={{ padding: '2rem', marginBottom: '2rem', background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(76, 29, 149, 0.1))', border: '1px solid var(--secondary)33' }}>
+        <h3 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <Fingerprint size={24} color="var(--secondary)" /> Neural Audit Engine (Analyse Sémantique)
+        </h3>
+        <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
+          Le DeepMind scanne les libellés de factures et les justifications de DBM pour identifier des incohérences sémantiques ou des signaux d'intention suspecte.
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+           <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', borderLeft: '4px solid var(--secondary)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <div style={{ fontWeight: 600 }}>Détection d'Abus de Terminology</div>
+                <div style={{ fontSize: '0.8rem', opacity: 0.7 }}>Usage excessif du terme "Urgence Vitale" pour des fournitures de bureau.</div>
+              </div>
+              <span className="kpi-badge warning">IA Match 82%</span>
+           </div>
+           <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', borderLeft: '4px solid var(--secondary)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <div style={{ fontWeight: 600 }}>Analyse de Cohérence Prestataire</div>
+                <div style={{ fontSize: '0.8rem', opacity: 0.7 }}>Facture de "Services IT" émise par une entreprise enregistrée en "BTP/Gros Œuvre".</div>
+              </div>
+              <span className="kpi-badge negative">Risque Critique</span>
+           </div>
+        </div>
+      </div>
+
       <div style={{ marginTop: '2rem', display: 'flex', gap: '1.5rem' }}>
          <div className="glass-panel" style={{ flex: 1, padding: '1.5rem', background: 'rgba(59, 130, 246, 0.05)', border: '1px solid var(--primary)33' }}>
             <h4 style={{ marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>

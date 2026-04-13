@@ -1,5 +1,5 @@
-  Calendar, Archive, MessageSquareDiff, FlaskConical, 
-  Fingerprint, Share2, Globe, Activity
+  Smartphone, Presentation, Zap, Lightbulb,
+  Brain, Network, Award
 } from 'lucide-react';
 
 import { useBudget } from '../context/BudgetContext';
@@ -38,6 +38,16 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
           <a onClick={() => setActiveTab('ged')} className={`nav-item ${activeTab === 'ged' ? 'active' : ''}`}>
              <CloudUpload size={18} />
              <span>Scanner IA & GED</span>
+          </a>
+        <div className="nav-group" style={{ background: 'linear-gradient(90deg, rgba(59, 130, 246, 0.05) 0%, transparent 100%)', borderLeft: '3px solid var(--primary)' }}>
+          <div className="nav-group-title" style={{ color: 'var(--primary)', fontWeight: 800 }}>INTEL SINGULARITY</div>
+          <a onClick={() => setActiveTab('deepmind_core')} className={`nav-item ${activeTab === 'deepmind_core' ? 'active' : ''}`}>
+             <Brain size={18} color="var(--primary)" />
+             <span style={{ fontWeight: 700 }}>DEEPMIND CORE</span>
+          </a>
+          <a onClick={() => setActiveTab('financial_graph')} className={`nav-item ${activeTab === 'financial_graph' ? 'active' : ''}`}>
+             <Network size={18} color="var(--primary)" />
+             <span>Knowledge Graph</span>
           </a>
         </div>
 
@@ -87,9 +97,9 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
 
         <div className="nav-group">
           <div className="nav-group-title">Contrôle & Sécurité</div>
-          <a onClick={() => setActiveTab('rapports')} className={`nav-item ${activeTab === 'rapports' ? 'active' : ''}`}>
-            <PieChart size={18} />
-            <span>États SYSCOHADA</span>
+          <a onClick={() => setActiveTab('reporting_hub')} className={`nav-item ${activeTab === 'reporting_hub' ? 'active' : ''}`}>
+             <PieChart size={18} />
+             <span>Hub Editions 360°</span>
           </a>
           <a onClick={() => setActiveTab('security_hunter')} className={`nav-item ${activeTab === 'security_hunter' ? 'active' : ''}`}>
              <Fingerprint size={18} />
@@ -99,9 +109,33 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
             <ShieldCheck size={18} />
             <span>{t('audit')}</span>
           </a>
+          <a onClick={() => setActiveTab('gold_certificate')} className={`nav-item ${activeTab === 'gold_certificate' ? 'active' : ''}`}>
+             <Award size={18} color="var(--warning)" />
+             <span style={{ color: 'var(--warning)', fontWeight: 600 }}>Certification Gold</span>
+          </a>
           <a onClick={() => setActiveTab('archivage')} className={`nav-item ${activeTab === 'archivage' ? 'active' : ''}`}>
              <Archive size={18} />
              <span>Archivage Légal</span>
+          </a>
+        </div>
+
+        <div className="nav-group">
+          <div className="nav-group-title">Vision & Innovation</div>
+          <a onClick={() => setActiveTab('cost_killer')} className={`nav-item ${activeTab === 'cost_killer' ? 'active' : ''}`}>
+             <Zap size={18} />
+             <span>Cost-Killer IA</span>
+          </a>
+          <a onClick={() => setActiveTab('participatory')} className={`nav-item ${activeTab === 'participatory' ? 'active' : ''}`}>
+             <Lightbulb size={18} />
+             <span>Budget Participatif</span>
+          </a>
+          <a onClick={() => setActiveTab('presentation')} className={`nav-item ${activeTab === 'presentation' ? 'active' : ''}`}>
+             <Presentation size={18} />
+             <span>Board Presentation</span>
+          </a>
+          <a onClick={() => setActiveTab('mobile_hub')} className={`nav-item ${activeTab === 'mobile_hub' ? 'active' : ''}`}>
+             <Smartphone size={18} />
+             <span>Executive Mobile</span>
           </a>
         </div>
 
@@ -121,6 +155,19 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
           </a>
         </div>
       </nav>
+
+      <div style={{ marginTop: 'auto', padding: '1.5rem', borderTop: '1px solid var(--glass-border)' }}>
+         <div style={{ 
+           background: 'rgba(245, 158, 11, 0.1)', 
+           border: '1px solid var(--warning)33', 
+           padding: '0.75rem', 
+           borderRadius: '8px',
+           textAlign: 'center'
+         }}>
+            <div style={{ fontSize: '0.65rem', color: 'var(--warning)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Souveraineté Elite</div>
+            <div style={{ fontSize: '0.85rem', fontWeight: 700 }}>v2.5 Release</div>
+         </div>
+      </div>
     </aside>
   );
 };

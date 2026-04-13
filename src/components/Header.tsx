@@ -1,7 +1,12 @@
 import React from 'react';
-import { Search, Bell } from 'lucide-react';
+import { Search, Bell, Monitor } from 'lucide-react';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  isWarRoom?: boolean;
+  setIsWarRoom?: (val: boolean) => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ isWarRoom, setIsWarRoom }) => {
   return (
     <header className="top-header">
       <div className="header-search">
@@ -10,6 +15,16 @@ const Header: React.FC = () => {
       </div>
       
       <div className="header-actions">
+        {setIsWarRoom && (
+          <button 
+            className={`btn-icon ${isWarRoom ? 'active' : ''}`} 
+            onClick={() => setIsWarRoom(!isWarRoom)}
+            title="Mode War Room"
+            style={{ color: isWarRoom ? 'var(--warning)' : 'inherit' }}
+          >
+            <Monitor size={20} />
+          </button>
+        )}
         <button className="btn-icon">
           <Bell size={20} />
         </button>
