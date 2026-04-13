@@ -3,8 +3,9 @@ import { UploadCloud, FileType, CheckCircle, FileText, Image as ImageIcon, Spark
 import { useBudget } from '../context/BudgetContext';
 
 const ImportDocument: React.FC = () => {
-  const { documents, addDocument, simulateDocAnalysis } = useBudget();
+  const { documents, addDocument, simulateDocAnalysis, addEngagement, addRecette, t, industryMode } = useBudget();
   const [isDragging, setIsDragging] = useState(false);
+  const isHospital = industryMode === 'hospitalier';
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -71,18 +72,39 @@ const ImportDocument: React.FC = () => {
 
   // Mock complete function for the generic UI
   const triggerFakeAnalysisCompleter = (id: string, name: string) => {
-    const data = name.toLowerCase().includes('facture')
+    const isFacture = name.toLowerCase().includes('facture') || name.toLowerCase().includes('inv');
+    const data = isFacture
         ? 'OCR [Facture]: MNT=4,500,500 XOF | Compte: 614 | Fournisseur: Senelec'
-        : 'NLP [Contrat/Projet]: Période=24 mois | Budget affecté: DSI | Criticité: Elevée';
+        : 'NLP [Contrat/Titre]: Période=24 mois | Budget affecté: DSI | Valeur=12,000,000';
     simulateDocAnalysis(id, data);
+  };
+
+  const createFromDoc = (doc: any) => {
+    if (doc.fileName.toLowerCase().includes('facture')) {
+      addEngagement({
+        obj: `Extrait IA: ${doc.fileName}`,
+        service: isHospital ? 'Pharmacie' : 'Marketing',
+        amt: 4500500,
+        budg: '611 - Achat de matières et fournitures'
+      });
+      alert(`${t('engagement')} créé automatiquement à partir du document.`);
+    } else {
+      addRecette({
+        titre: `Titre extrait: ${doc.fileName}`,
+        source: 'AI-Extraction',
+        compte: '701',
+        montant: 12000000
+      });
+      alert(`${t('recettes')} créé automatiquement à partir du document.`);
+    }
   };
 
   return (
     <div className="dashboard-view animate-fade-in">
       <div className="dashboard-header">
         <div>
-          <h1>GED & Intelligence Artificielle (OCR)</h1>
-          <p>Import universel et extraction sémantique des métadonnées</p>
+          <h1>Module IA & Scanner GED</h1>
+          <p>Import universel et extraction sémantique des données {isHospital ? 'hospitalières' : 'corporate'}</p>
         </div>
       </div>
 
@@ -206,9 +228,16 @@ const ImportDocument: React.FC = () => {
                          <Sparkles size={16} />
                        </button>
                     ) : (
-                       <button className="btn-icon" style={{ color: 'var(--success)' }}>
-                         <CheckCircle size={16} />
-                       </button>
+                       <div style={{ display: 'flex', gap: '0.5rem' }}>
+                         <button className="btn" 
+                                 onClick={() => createFromDoc(doc)}
+                                 style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem', background: 'var(--primary)', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                            Intégrer
+                         </button>
+                         <button className="btn-icon" style={{ color: 'var(--success)' }}>
+                           <CheckCircle size={16} />
+                         </button>
+                       </div>
                     )}
                   </td>
                 </tr>

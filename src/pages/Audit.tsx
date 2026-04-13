@@ -3,22 +3,23 @@ import { ShieldCheck, Download, Search, Filter, Key, Database, Activity, Mail } 
 import { useBudget } from '../context/BudgetContext';
 
 const AuditPage: React.FC = () => {
-  const { auditLogs } = useBudget();
+  const { auditLogs, t, industryMode } = useBudget();
+  const isHospital = industryMode === 'hospitalier';
 
   return (
     <div className="dashboard-view animate-fade-in">
       {/* SECURITY BANNER */}
-      <div style={{ background: 'linear-gradient(90deg, #b91c1c 0%, #7f1d1d 100%)', padding: '0.5rem 1rem', borderRadius: 'var(--radius-sm)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+      <div style={{ background: isHospital ? 'linear-gradient(90deg, #b91c1c 0%, #7f1d1d 100%)' : 'linear-gradient(90deg, var(--primary) 0%, #1e3a8a 100%)', padding: '0.5rem 1rem', borderRadius: 'var(--radius-sm)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
         <ShieldCheck size={20} color="white" />
         <span style={{ color: 'white', fontWeight: 600, fontSize: '0.9rem', letterSpacing: '0.05em' }}>
-          SESSION IGF / IGE : ESPACE SÉCURISÉ EN LECTURE SEULE - HORODATAGE eIDAS ACTIF
+          SESSION {isHospital ? 'IGF / IGE' : 'AUDIT EXTERNE'} : ESPACE SÉCURISÉ EN LECTURE SEULE - HORODATAGE eIDAS ACTIF
         </span>
       </div>
 
       <div className="dashboard-header">
         <div>
-          <h1>Module Audit & Inspection</h1>
-          <p>Journal immutable des opérations et traçabilité pour les corps de contrôle (IGF/CENTIF)</p>
+          <h1>{t('audit')}</h1>
+          <p>Journal immutable des opérations et traçabilité pour les corps de contrôle {isHospital ? '(IGF/CENTIF)' : '(CAC / Audit Interne)'}</p>
         </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
           <button className="btn btn-icon">

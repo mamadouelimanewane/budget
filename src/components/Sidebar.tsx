@@ -6,24 +6,27 @@ import {
   Calendar, Archive, MessageSquareDiff
 } from 'lucide-react';
 
+import { useBudget } from '../context/BudgetContext';
+
 interface SidebarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
+  const { t, industryMode } = useBudget();
   return (
     <aside className="sidebar" style={{ overflowY: 'auto' }}>
       <div className="brand">
-        <div className="brand-icon">
+        <div className="brand-icon" style={{ background: industryMode === 'hospitalier' ? 'var(--success)' : 'var(--primary)' }}>
           <Wallet size={20} color="white" />
         </div>
-        <span className="brand-text">SIGB Intelli</span>
+        <span className="brand-text" style={{ fontSize: '1rem' }}>{industryMode === 'hospitalier' ? 'SIH HOGGY' : 'Corporate ERP'}</span>
       </div>
       
       <nav className="nav-menu">
         <div className="nav-group">
-          <div className="nav-group-title">Pilotage</div>
+          <div className="nav-group-title">{t('stats')}</div>
           <a onClick={() => setActiveTab('dashboard')} className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}>
             <LayoutDashboard size={18} />
             <span>Tableau de Bord</span>
@@ -50,7 +53,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
           </a>
           <a onClick={() => setActiveTab('allocation')} className={`nav-item ${activeTab === 'allocation' ? 'active' : ''}`}>
             <Briefcase size={18} />
-            <span>Allocation aux Services</span>
+            <span>Allocation aux {t('service_term')}s</span>
           </a>
         </div>
 
@@ -66,7 +69,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
           <div className="nav-group-title">Dépenses & Achats</div>
           <a onClick={() => setActiveTab('engagements')} className={`nav-item ${activeTab === 'engagements' ? 'active' : ''}`}>
             <ShoppingCart size={18} />
-            <span>Expression & Engagements</span>
+            <span>{t('engagement')}</span>
           </a>
           <a onClick={() => setActiveTab('commandes')} className={`nav-item ${activeTab === 'commandes' ? 'active' : ''}`}>
             <Package size={18} />
@@ -78,7 +81,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
           <div className="nav-group-title">Ressources</div>
           <a onClick={() => setActiveTab('recettes')} className={`nav-item ${activeTab === 'recettes' ? 'active' : ''}`}>
             <CreditCard size={18} />
-            <span>Registre des Recettes</span>
+            <span>{t('recettes')}</span>
           </a>
         </div>
 
@@ -90,7 +93,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
           </a>
           <a onClick={() => setActiveTab('audit')} className={`nav-item ${activeTab === 'audit' ? 'active' : ''}`}>
             <ShieldCheck size={18} />
-            <span>Espace Audit (IGF)</span>
+            <span>{t('audit')}</span>
           </a>
           <a onClick={() => setActiveTab('archivage')} className={`nav-item ${activeTab === 'archivage' ? 'active' : ''}`}>
              <Archive size={18} />

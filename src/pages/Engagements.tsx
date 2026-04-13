@@ -4,14 +4,14 @@ import { useBudget } from '../context/BudgetContext';
 import Modal from '../components/Modal';
 
 const Engagements: React.FC = () => {
-  const { engagements, budgetLines, addEngagement, updateEngagementStatus } = useBudget();
+  const { engagements, budgetLines, addEngagement, updateEngagementStatus, t } = useBudget();
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   // Nouveaux engagements state
   const [obj, setObj] = useState('');
   const [amt, setAmt] = useState('');
   const [budg, setBudg] = useState('');
-  const [service, setService] = useState('DSI');
+  const [service, setService] = useState('Marketing'); // General default
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,9 +28,9 @@ const Engagements: React.FC = () => {
 
   const getStatusBadge = (stat: string) => {
     switch(stat) {
-      case 'besoin': return <span className="status-badge status-pending">Nouveau Besoin</span>;
-      case 'pending': return <span className="status-badge status-pending">En Attente V.</span>;
-      case 'approved': return <span className="status-badge status-completed">Visé (Validé)</span>;
+      case 'besoin': return <span className="status-badge" style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)' }}>Brouillon / Demande</span>;
+      case 'visa': return <span className="status-badge status-pending" style={{ background: 'rgba(59, 130, 246, 0.1)', color: 'var(--primary)' }}>{t('visa_finance')}</span>;
+      case 'approved': return <span className="status-badge status-completed">Approuvé (Ready)</span>;
       case 'rejected': return <span className="status-badge" style={{ background: 'rgba(239, 68, 68, 0.1)', color: 'var(--danger)', border: '1px solid rgba(239,68,68,0.2)' }}>Rejeté</span>;
       default: return null;
     }
@@ -40,12 +40,12 @@ const Engagements: React.FC = () => {
     <div className="dashboard-view animate-fade-in">
       <div className="dashboard-header">
         <div>
-          <h1>Gestion des Engagements</h1>
-          <p>Expression de besoins et workflow de validation</p>
+          <h1>{t('engagement')}</h1>
+          <p>Workflow de validation multi-niveaux et contrôle budgétaire</p>
         </div>
         <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>
           <Plus size={18} />
-          <span>Exprimer Besoin</span>
+          <span>{t('exprimer_besoin')}</span>
         </button>
       </div>
 
@@ -112,15 +112,20 @@ const Engagements: React.FC = () => {
                   </td>
                   <td>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      {(eng.stat === 'besoin' || eng.stat === 'pending') && (
-                        <>
-                          <button className="btn-icon" style={{ color: 'var(--success)' }} onClick={() => updateEngagementStatus(eng.id, 'approved')} title="Valider">
-                            <CheckCircle size={16} />
-                          </button>
-                          <button className="btn-icon" style={{ color: 'var(--danger)' }} onClick={() => updateEngagementStatus(eng.id, 'rejected')} title="Rejeter">
-                            <XCircle size={16} />
-                          </button>
-                        </>
+                      {eng.stat === 'besoin' && (
+                        <button className="btn-icon" style={{ color: 'var(--primary)' }} onClick={() => updateEngagementStatus(eng.id, 'visa')} title={t('visa_finance')}>
+                          <CheckCircle size={16} /> <span style={{fontSize: '0.75rem'}}>Viser</span>
+                        </button>
+                      )}
+                      {eng.stat === 'visa' && (
+                        <button className="btn-icon" style={{ color: 'var(--success)' }} onClick={() => updateEngagementStatus(eng.id, 'approved')} title={t('approbation')}>
+                          <CheckCircle size={16} /> <span style={{fontSize: '0.75rem'}}>Approuver</span>
+                        </button>
+                      )}
+                      {(eng.stat === 'besoin' || eng.stat === 'visa') && (
+                        <button className="btn-icon" style={{ color: 'var(--danger)' }} onClick={() => updateEngagementStatus(eng.id, 'rejected')} title="Rejeter">
+                          <XCircle size={16} />
+                        </button>
                       )}
                       <button className="btn-icon" title="Voir détails">
                         <Receipt size={16} />
@@ -141,11 +146,12 @@ const Engagements: React.FC = () => {
             <input type="text" value={obj} onChange={e => setObj(e.target.value)} required style={{ width: '100%', padding: '0.75rem', background: 'var(--surface-color-light)', border: '1px solid var(--glass-border)', color: 'white', borderRadius: '4px' }} />
           </div>
           <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Service</label>
+            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>{t('service_term')}</label>
             <select value={service} onChange={e => setService(e.target.value)} required style={{ width: '100%', padding: '0.75rem', background: 'var(--surface-color-light)', border: '1px solid var(--glass-border)', color: 'white', borderRadius: '4px' }}>
-              <option value="DSI">DSI</option>
-              <option value="Moyens Généraux">Moyens Généraux</option>
-              <option value="Logistique">Logistique</option>
+              <option value="DSI">DSI / IT</option>
+              <option value="Marketing">Marketing & Com</option>
+              <option value="RH">Ressources Humaines</option>
+              <option value="Logistique">Logistique & Moyens Gx</option>
             </select>
           </div>
           <div>

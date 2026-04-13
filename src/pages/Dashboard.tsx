@@ -6,8 +6,10 @@ import {
 import { useBudget } from '../context/BudgetContext';
 
 const Dashboard: React.FC = () => {
-  const { budgetLines, engagements, dbms } = useBudget();
+  const { budgetLines, engagements, dbms, t, industryMode } = useBudget();
   const [currency, setCurrency] = useState('XOF');
+
+  const isHospital = industryMode === 'hospitalier';
 
   // Calculations
   const dotationInitiale = budgetLines.reduce((acc, curr) => acc + curr.n1, 0);
@@ -32,8 +34,8 @@ const Dashboard: React.FC = () => {
     <div className="dashboard-view animate-fade-in">
       <div className="dashboard-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h1>Tableau de Bord Exécutif</h1>
-          <p>Supervision globale multi-entités et pilotage temps réel</p>
+          <h1>{isHospital ? 'Tableau de Bord SIH' : 'Exécutif Dashboard Board'}</h1>
+          <p>Supervision globale multi-{isHospital ? 'services' : 'entités'} et pilotage temps réel</p>
         </div>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
           {/* MULTI DEVSE BUTTON */}
@@ -69,7 +71,7 @@ const Dashboard: React.FC = () => {
       <div className="kpi-grid">
         <div className="kpi-card glass-panel" style={{ borderTop: '4px solid var(--primary)' }}>
           <div className="kpi-header">
-            <span className="kpi-title">Dotation Initiale Allouée</span>
+            <span className="kpi-title">{t('dotation')}</span>
             <div className="kpi-icon" style={{ background: 'rgba(59, 130, 246, 0.1)', color: 'var(--primary)' }}>
               <DollarSign size={20} />
             </div>
@@ -96,12 +98,12 @@ const Dashboard: React.FC = () => {
 
         <div className="kpi-card glass-panel" style={{ borderTop: '4px solid var(--secondary)' }}>
           <div className="kpi-header">
-            <span className="kpi-title">Dossiers de Dépenses en Attente</span>
+            <span className="kpi-title">{isHospital ? 'Dossiers en attente de Visa' : 'Demandes d\'achats à valider'}</span>
             <div className="kpi-icon" style={{ background: 'rgba(139, 92, 246, 0.1)', color: 'var(--secondary)' }}>
               <AlertCircle size={20} />
             </div>
           </div>
-          <div className="kpi-value">{engagementsEnAttente} <span style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>dossiers</span></div>
+          <div className="kpi-value">{engagementsEnAttente} <span style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>{isHospital ? 'dossiers' : 'demandes'}</span></div>
           <button className="btn btn-primary" style={{ marginTop: '0.5rem', fontSize: '0.8rem', padding: '0.4rem' }}>
             Examiner pour Visa
           </button>
@@ -143,8 +145,8 @@ const Dashboard: React.FC = () => {
                 <CreditCard size={24} />
               </div>
               <div>
-                <h3 style={{ fontSize: '1.1rem', marginBottom: '0.25rem' }}>Centralisation des Cartes Virtuelles</h3>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Cartes de paiement plafonnées et éphémères actives pour vos équipes.</p>
+                <h3 style={{ fontSize: '1.1rem', marginBottom: '0.25rem' }}>{isHospital ? 'Cartes Budgétaires Services' : 'Centralisation des Cartes Virtuelles'}</h3>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{isHospital ? 'Plafonds de dépenses par unité médicale.' : 'Cartes de paiement plafonnées et éphémères actives pour vos équipes.'}</p>
               </div>
             </div>
             <button className="btn" style={{ background: 'var(--success)', color: 'white', border: 'none' }}>Gérer Cartes</button>

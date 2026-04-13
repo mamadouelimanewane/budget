@@ -3,19 +3,21 @@ import { FileDown, FileCheck2, CheckCircle, ShieldCheck } from 'lucide-react';
 import { useBudget } from '../context/BudgetContext';
 
 const OperationsPaiement: React.FC = () => {
-  const { engagements } = useBudget();
+  const { engagements, industryMode } = useBudget();
   const [activeWorkflow, setActiveWorkflow] = useState('ordres');
+
+  const isHospital = industryMode === 'hospitalier';
 
   // Filtrer les engagements approuvés (visés) prêts à être payés
   const approvedEngagements = engagements.filter(e => e.stat === 'approved' || e.stat === 'commande');
 
   const handlePayOrder = (id: string) => {
-    alert(`Ordre de paiement généré et signé par le Directeur pour l'engagement ${id}`);
+    alert(`Ordre signé par le ${isHospital ? 'Directeur Général' : 'PDG / DAF'} pour l'engagement ${id}`);
     // Ideally update state here to 'ordonnance' 
   };
 
   const handleReceipt = (id: string) => {
-    alert(`Reçu de décaissement enregistré par l'ACP pour le dossier ${id}. Clôture de l'opération.`);
+    alert(`Règlement enregistré par ${isHospital ? "l'ACP" : "la Trésorerie"} pour le dossier ${id}. Clôture de l'opération.`);
   };
 
   return (
@@ -23,7 +25,7 @@ const OperationsPaiement: React.FC = () => {
       <div className="dashboard-header">
         <div>
           <h1>Liquidation & Ordonnancement</h1>
-          <p>Gestion des Ordres de Paiement (DG) et Reçus de Décaissement (ACP)</p>
+          <p>Gestion des {isHospital ? 'Ordres de Paiement (DG) et Reçus de Décaissement (ACP)' : 'Ordres de Virements (Direction) et Règlements (Trésorerie)'}</p>
         </div>
       </div>
 
@@ -33,14 +35,14 @@ const OperationsPaiement: React.FC = () => {
           onClick={() => setActiveWorkflow('ordres')}
           style={{ padding: '0.75rem 1.5rem', background: activeWorkflow !== 'ordres' ? 'var(--surface-color)' : '' }}
         >
-          <FileDown size={18} /> Ordres de Paiement (Espace Directeur)
+          <FileDown size={18} /> {isHospital ? 'Ordres de Paiement (Espace Directeur)' : 'Autorisation Virements (Comité Executif)'}
         </button>
         <button 
           className={`btn ${activeWorkflow === 'recus' ? 'btn-primary' : ''}`}
           onClick={() => setActiveWorkflow('recus')}
           style={{ padding: '0.75rem 1.5rem', background: activeWorkflow !== 'recus' ? 'var(--surface-color)' : 'var(--success)' }}
         >
-          <FileCheck2 size={18} /> Reçus de Décaissement (Espace ACP)
+          <FileCheck2 size={18} /> {isHospital ? 'Reçus de Décaissement (Espace ACP)' : 'Règlements & Quittances (Trésorerie)'}
         </button>
       </div>
 
@@ -50,8 +52,8 @@ const OperationsPaiement: React.FC = () => {
              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid var(--glass-border)' }}>
                <ShieldCheck size={24} color="var(--primary)" />
                <div>
-                  <h3 style={{ margin: 0 }}>Génération des Ordres de Paiement (OP)</h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Espace réservé au Directeur Général. Seuls les engagements de dépenses validés par le contrôleur apparaissent ici.</p>
+                  <h3 style={{ margin: 0 }}>Génération des {isHospital ? 'Ordres de Paiement (OP)' : 'Ordres de Virements Multiples'}</h3>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Espace réservé {isHospital ? 'au Directeur Général' : 'à la Direction / PDG'}. Seuls les engagements de dépenses validés apparaissent ici.</p>
                </div>
              </div>
              
@@ -62,7 +64,7 @@ const OperationsPaiement: React.FC = () => {
                     <th style={{ padding: '0.75rem' }}>Objet de la Dépense / BC</th>
                     <th style={{ padding: '0.75rem' }}>Service Demandeur</th>
                     <th style={{ padding: '0.75rem' }}>Montant</th>
-                    <th style={{ padding: '0.75rem' }}>Action DG</th>
+                    <th style={{ padding: '0.75rem' }}>Action {isHospital ? 'DG' : 'Directeur'}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -81,7 +83,7 @@ const OperationsPaiement: React.FC = () => {
                       <td style={{ padding: '1rem 0.75rem', fontWeight: 600, color: 'var(--text-main)' }}>{eng.amt.toLocaleString()} XOF</td>
                       <td style={{ padding: '1rem 0.75rem' }}>
                         <button className="btn btn-primary" onClick={() => handlePayOrder(eng.id)} style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem' }}>
-                          Générer OP
+                          Générer {isHospital ? 'OP' : 'Virement'}
                         </button>
                       </td>
                     </tr>
@@ -96,8 +98,8 @@ const OperationsPaiement: React.FC = () => {
              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid var(--glass-border)' }}>
                <CheckCircle size={24} color="var(--success)" />
                <div>
-                  <h3 style={{ margin: 0 }}>Génération des Reçus de Décaissement (RD)</h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Espace réservé à l'Agent Comptable Particulier (ACP). Caisse et paiements effectifs selon les OP signés.</p>
+                  <h3 style={{ margin: 0 }}>Génération des {isHospital ? 'Reçus de Décaissement (RD)' : 'Quittances de Règlement'}</h3>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Espace réservé à {isHospital ? "l'Agent Comptable Particulier (ACP)" : "la Trésorerie"}. Caisse et paiements effectifs selon les autorisations.</p>
                </div>
              </div>
              
@@ -105,10 +107,10 @@ const OperationsPaiement: React.FC = () => {
              <table style={{ width: '100%' }}>
                 <thead>
                   <tr style={{ borderBottom: '1px solid var(--glass-border)', textAlign: 'left', color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}>
-                    <th style={{ padding: '0.75rem' }}># OP (Ordre Paiement)</th>
+                    <th style={{ padding: '0.75rem' }}>{isHospital ? '# OP (Ordre Paiement)' : '# Autorisation'}</th>
                     <th style={{ padding: '0.75rem' }}>Bénéficiaire / Montant</th>
-                    <th style={{ padding: '0.75rem' }}>Date Signature DG</th>
-                    <th style={{ padding: '0.75rem' }}>Action ACP</th>
+                    <th style={{ padding: '0.75rem' }}>Date Signature</th>
+                    <th style={{ padding: '0.75rem' }}>Action {isHospital ? 'ACP' : 'Comptable'}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -117,8 +119,8 @@ const OperationsPaiement: React.FC = () => {
                     <td style={{ padding: '1rem 0.75rem' }}>SENELEC (4,500,000 XOF)</td>
                     <td style={{ padding: '1rem 0.75rem', color: 'var(--text-muted)' }}>13/04/2026</td>
                     <td style={{ padding: '1rem 0.75rem' }}>
-                      <button className="btn btn-primary" onClick={() => handleReceipt('OP-2026-1022')} style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem', background: 'var(--success)', border: 'none' }}>
-                        Payer & Émettre RD
+                      <button className="btn btn-primary" onClick={() => handleReceipt(isHospital ? 'OP-2026-1022' : 'VIR-2026-1022')} style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem', background: 'var(--success)', border: 'none' }}>
+                        Payer & Émettre {isHospital ? 'RD' : 'Quittance'}
                       </button>
                     </td>
                   </tr>

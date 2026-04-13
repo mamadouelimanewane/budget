@@ -16,7 +16,7 @@ export interface Engagement {
   service: string;
   amt: number;
   budg: string;
-  stat: 'besoin' | 'pending' | 'approved' | 'rejected' | 'commande' | 'paye';
+  stat: 'besoin' | 'visa' | 'approved' | 'rejected' | 'commande' | 'paye';
   date: string;
 }
 
@@ -68,6 +68,8 @@ interface BudgetContextType {
   recettes: Recette[];
   auditLogs: AuditLog[];
   documents: DocumentGED[];
+  industryMode: 'hospitalier' | 'entreprise';
+  setIndustryMode: (mode: 'hospitalier' | 'entreprise') => void;
   updateBudgetLine: (id: string, newN1p: number) => void;
   addEngagement: (engagement: Omit<Engagement, 'id' | 'date' | 'stat'>) => void;
   updateEngagementStatus: (id: string, status: Engagement['stat']) => void;
@@ -77,14 +79,47 @@ interface BudgetContextType {
   updateRecetteStatus: (id: string, stat: Recette['stat']) => void;
   addDocument: (doc: Omit<DocumentGED, 'id' | 'uploadDate' | 'status'>) => void;
   simulateDocAnalysis: (id: string, extractedData: string) => void;
+  t: (key: string) => string;
 }
 
 const BudgetContext = createContext<BudgetContextType | undefined>(undefined);
 
 export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) => {
+  const [industryMode, setIndustryMode] = useState<'hospitalier' | 'entreprise'>('entreprise');
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([
     { id: 'LOG-88231', timestamp: new Date().toISOString(), user: 'Mamadou Dia (DSI)', action: 'CONNEXION_SSO', module: 'Auth', detail: 'Authentification via SAML 2.0 réussie', ip: '197.214.23.11' }
   ]);
+
+  const dictionary = {
+    entreprise: {
+      app_title: 'SIGB Intelli - Corporate ERP',
+      engagement: 'Demandes d\'Achats',
+      exprimer_besoin: 'Nouvelle Demande',
+      visa_finance: 'Validation Finance',
+      approbation: 'Approbation Direction',
+      dotation: 'Budget Annuel Board',
+      recettes: 'Flux de Revenus',
+      audit: 'Audit & Commissariat aux Comptes',
+      stats: 'Business Intelligence',
+      service_term: 'Département'
+    },
+    hospitalier: {
+      app_title: 'SIGB Intelli - SI Hospitalier (HOGGY)',
+      engagement: 'Expressions de Besoins',
+      exprimer_besoin: 'Exprimer Besoin',
+      visa_finance: 'Visa Contrôle de Gestion',
+      approbation: 'Approbation DG (HOGGY)',
+      dotation: 'Dotation Initiale Santé',
+      recettes: 'Recettes Hospitalières',
+      audit: 'Contrôle État (IGE/IGF)',
+      stats: 'Statistiques Sanitaires',
+      service_term: 'Unité / Service'
+    }
+  };
+
+  const t = (key: string): string => {
+    return (dictionary[industryMode] as any)[key] || key;
+  };
 
   const addLog = (user: string, action: string, module: string, detail: string) => {
     const newLog: AuditLog = {
@@ -164,9 +199,9 @@ export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) =>
 
   return (
     <BudgetContext.Provider value={{
-      budgetLines, engagements, dbms, recettes, auditLogs, documents,
-      updateBudgetLine, addEngagement, updateEngagementStatus, addDBM, approveDBM,
-      addRecette, updateRecetteStatus, addDocument, simulateDocAnalysis
+      budgetLines, engagements, dbms, recettes, auditLogs, documents, industryMode,
+      setIndustryMode, updateBudgetLine, addEngagement, updateEngagementStatus, addDBM, approveDBM,
+      addRecette, updateRecetteStatus, addDocument, simulateDocAnalysis, t
     }}>
       {children}
     </BudgetContext.Provider>

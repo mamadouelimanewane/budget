@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import { Calendar, Lock, Unlock, ArrowRight, Play, Server, AlertTriangle } from 'lucide-react';
+import { useBudget } from '../context/BudgetContext';
 
-const years = [
-  { year: '2024', status: 'closed', desc: 'Exercice Clôturé définitivement. Données archivées.' },
-  { year: '2025', status: 'closed', desc: 'Exercice Clôturé. En attente de l\'audit final de l\'IGE.' },
-  { year: '2026', status: 'active', desc: 'Exercice en cours. Exécution budgétaire ouverte.' },
-  { year: '2027', status: 'prep', desc: 'Exercice en préparation. Arbitrages en cours.' },
-];
+
 
 const ExercicesPage: React.FC = () => {
+  const { industryMode } = useBudget();
   const [selectedYear, setSelectedYear] = useState('2026');
+
+  const isHospital = industryMode === 'hospitalier';
+
+  const years = [
+    { year: '2024', status: 'closed', desc: 'Exercice Clôturé définitivement. Données archivées.' },
+    { year: '2025', status: 'closed', desc: `Exercice Clôturé. En attente de l'audit final ${isHospital ? "de l'IGE" : "du Commissariat aux Comptes"}.` },
+    { year: '2026', status: 'active', desc: 'Exercice en cours. Exécution budgétaire ouverte.' },
+    { year: '2027', status: 'prep', desc: 'Exercice en préparation. Arbitrages en cours.' },
+  ];
 
   return (
     <div className="dashboard-view animate-fade-in">
@@ -103,7 +109,7 @@ const ExercicesPage: React.FC = () => {
                     <Server size={18} /> Données Intègres (Archivage Légal)
                   </h4>
                   <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
-                    Aucune modification ne peut être apportée sur cet exercice. Les données de clôture sont transmises à la Cour des Comptes et scellées.
+                    Aucune modification ne peut être apportée sur cet exercice. Les données de clôture sont transmises {isHospital ? 'à la Cour des Comptes' : 'au conseil d\'administration'} et scellées.
                   </p>
                   <button className="btn btn-primary" style={{ background: 'var(--surface-color-light)', color: 'white', border: '1px solid var(--glass-border)' }}>Décompresser Archive PDF</button>
                 </div>

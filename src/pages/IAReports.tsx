@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { Sparkles, FileText, Wand2, ArrowRight, Download, Send, RefreshCw } from 'lucide-react';
 
+import { useBudget } from '../context/BudgetContext';
+
 const IAReportsPage: React.FC = () => {
+  const { industryMode, t } = useBudget();
   const [generating, setGenerating] = useState(false);
   const [reportReady, setReportReady] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState('Trimestriel');
+  const [selectedTemplate, setSelectedTemplate] = useState(industryMode === 'hospitalier' ? 'Trimestriel' : 'Business');
+
+  const isHospital = industryMode === 'hospitalier';
 
   const handleGenerate = () => {
     setGenerating(true);
@@ -15,18 +20,22 @@ const IAReportsPage: React.FC = () => {
     }, 2800);
   };
 
-  const templates = [
-    { title: 'Exécution Trimestrielle', id: 'Trimestriel', desc: 'Rapport DFC standard pour le Ministère central. Synthèse narrative + KPIs.' },
-    { title: 'Note aux Bailleurs de Fonds', id: 'Bailleurs', desc: 'Focus sur les décaissements BM/AFD et conformité ESG.' },
-    { title: 'Synthèse de Clôture Annuelle', id: 'Cloture', desc: 'Squelette du rapport de présentation du compte administratif.' },
+  const templates = isHospital ? [
+    { title: 'Exécution Trimestrielle SIH', id: 'Trimestriel', desc: 'Rapport financier standard pour le Ministère central (HOGGY).' },
+    { title: 'Note aux Bailleurs (Santé)', id: 'Bailleurs', desc: 'Conformité pour les fonds externes (OMS/AFD).' },
+    { title: 'Synthèse Sanitaire Annuelle', id: 'Cloture', desc: 'Bilan de l\'efficience des dotations hospitalières.' },
+  ] : [
+    { title: 'Business Performance Q2/Q3', id: 'Business', desc: 'Financial synthesis for the board and investors.' },
+    { title: 'Audit Readiness Report', id: 'Audit', desc: 'Internal control summary for statutory auditors.' },
+    { title: 'Expense Analysis & Forecast', id: 'Forecast', desc: 'Automated narrative based on current burn rate.' },
   ];
 
   return (
     <div className="dashboard-view animate-fade-in">
       <div className="dashboard-header">
         <div>
-          <h1>Générateur IA de Rapports et Modèles</h1>
-          <p>Moteur NLP pour la rédaction narrative des rapports basés sur l'exécution financière</p>
+          <h1>Générateur de Rapports IA {isHospital ? '(Santé)' : '(Corporate)'}</h1>
+          <p>Moteur NLP pour la rédaction narrative {isHospital ? 'des rapports hospitaliers' : 'des business reviews'}</p>
         </div>
       </div>
 
@@ -68,7 +77,7 @@ const IAReportsPage: React.FC = () => {
             </div>
             <div>
               <h2 style={{ fontSize: '1.5rem' }}>Assistant de Rédaction ({selectedTemplate})</h2>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Connecté au modèle de langage spécialisé Finance Publique UEMOA</p>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Modèle de langage spécialisé : {isHospital ? 'Santé Publique UEMOA' : 'Finance Corporate & ERP'}</p>
             </div>
           </div>
 
@@ -97,17 +106,17 @@ const IAReportsPage: React.FC = () => {
           {reportReady && !generating && (
             <div className="animate-fade-in" style={{ flexGrow: 1 }}>
               <div style={{ background: 'var(--surface-color-light)', padding: '1.5rem', borderRadius: '8px', border: '1px solid var(--glass-border)', fontFamily: 'serif', overflowY: 'auto', maxHeight: '400px' }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '1rem', color: 'white' }}>Rapport d'Exécution Trimestriel</h2>
+                <h2 style={{ textAlign: 'center', marginBottom: '1rem', color: 'white' }}>{isHospital ? "Rapport d'Exécution Hospitalière" : "Business Performance Report"}</h2>
                 <p style={{ fontSize: '1.05rem', lineHeight: '1.6', color: '#e2e8f0', marginBottom: '1rem' }}>
-                  <strong>Résumé Exécutif :</strong> Au terme du présent trimestre, l'exécution budgétaire présente une dynamique modérée. Le taux de consommation global s'établit à 34,2%, témoignant d'une maîtrise des dépenses courantes. 
+                  <strong>Résumé Exécutif :</strong> L'analyse des flux montre une consommation stable. {isHospital ? "Les services cliniques maintiennent leur efficience." : "Le ROI opérationnel est soutenu par les départements IT."}
                 </p>
                 <p style={{ fontSize: '1.05rem', lineHeight: '1.6', color: '#e2e8f0', marginBottom: '1rem' }}>
-                  <strong>Analyse détaillée :</strong> Les dotations initiales allouées aux directions opérationnelles ont été consommées de façon asymétrique. La Direction des Systèmes d'Information (DSI) présente le niveau d'engagement le plus fort, justifié par les renouvellements structurels de Licences (+12.5% vs N-1). 
+                  <strong>Analyse détaillée :</strong> {isHospital ? "La dotation initiale SIH est utilisée à 34%. La Pharmacie Centrale demande un arbitrage." : "Le budget corporate est sous contrôle à 32%. Le département Marketing présente un burn-rate sain."}
                 </p>
                 <p style={{ fontSize: '1.05rem', lineHeight: '1.6', color: '#e2e8f0' }}>
-                  <strong>Recommandations (Générées par l'IA) :</strong>
-                  <br/>- Opérer une DBM de régularisation sur la ligne 611 due à une sur-sollicitation ponctuelle.
-                  <br/>- Accélérer le recouvrement externe (Banque Mondiale) pour équilibrer la trésorerie.
+                  <strong>Recommandations :</strong>
+                  <br/>- {isHospital ? "Effectuer une DBM pour les urgences médicales." : "Optimiser les coûts fixes sur le trimestre prochain."}
+                  <br/>- Maintenir la vigilance sur les {t('engagement')}s.
                 </p>
               </div>
 
