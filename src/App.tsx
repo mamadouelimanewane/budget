@@ -1,0 +1,71 @@
+import React, { useState } from 'react';
+import Sidebar from './components/Sidebar';
+import Header from './components/Header';
+import Dashboard from './pages/Dashboard';
+import PreparationBudget from './pages/PreparationBudget';
+import Engagements from './pages/Engagements';
+import DBMPage from './pages/DBM';
+import RecettesPage from './pages/Recettes';
+import AuditPage from './pages/Audit';
+import ImportDocument from './pages/ImportDocument';
+import ExercicesPage from './pages/Exercices';
+import ArchivagePage from './pages/Archivage';
+import IAReportsPage from './pages/IAReports';
+import ExtendedModulePlaceholder from './components/ExtendedModulePlaceholder';
+import { BudgetProvider } from './context/BudgetContext';
+import './App.css';
+
+function AppContent() {
+  const [activeTab, setActiveTab] = useState('dashboard');
+
+  const renderContent = () => {
+    switch(activeTab) {
+      case 'dashboard': return <Dashboard />;
+      case 'preparation': return <PreparationBudget />;
+      case 'allocation':
+        return <ExtendedModulePlaceholder 
+                  title="Allocation aux Services" 
+                  desc="Répartition du budget global par direction et par période." 
+                  icon="💼" />;
+      case 'dbm': return <DBMPage />;
+      case 'engagements': return <Engagements />;
+      case 'commandes':
+        return <ExtendedModulePlaceholder 
+                  title="Bons de Commande & Réceptions" 
+                  desc="Génération automatique des bons de commande fournisseur." 
+                  icon="📦" />;
+      case 'ged': return <ImportDocument />;
+      case 'ia_reports': return <IAReportsPage />;
+      case 'recettes': return <RecettesPage />;
+      case 'rapports':
+        return <ExtendedModulePlaceholder 
+                  title="États SYSCOHADA" 
+                  desc="Production des états financiers conformes aux normes UEMOA." 
+                  icon="📈" />;
+      case 'audit': return <AuditPage />;
+      case 'archivage': return <ArchivagePage />;
+      case 'exercices': return <ExercicesPage />;
+      default: return <Dashboard />;
+    }
+  };
+
+  return (
+    <div className="app-container">
+      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <main className="main-content">
+        <Header />
+        {renderContent()}
+      </main>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <BudgetProvider>
+      <AppContent />
+    </BudgetProvider>
+  );
+}
+
+export default App;
