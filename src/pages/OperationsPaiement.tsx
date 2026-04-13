@@ -1,0 +1,134 @@
+import React, { useState } from 'react';
+import { FileDown, FileCheck2, CheckCircle, ShieldCheck } from 'lucide-react';
+import { useBudget } from '../context/BudgetContext';
+
+const OperationsPaiement: React.FC = () => {
+  const { engagements } = useBudget();
+  const [activeWorkflow, setActiveWorkflow] = useState('ordres');
+
+  // Filtrer les engagements approuvés (visés) prêts à être payés
+  const approvedEngagements = engagements.filter(e => e.stat === 'approved' || e.stat === 'commande');
+
+  const handlePayOrder = (id: string) => {
+    alert(`Ordre de paiement généré et signé par le Directeur pour l'engagement ${id}`);
+    // Ideally update state here to 'ordonnance' 
+  };
+
+  const handleReceipt = (id: string) => {
+    alert(`Reçu de décaissement enregistré par l'ACP pour le dossier ${id}. Clôture de l'opération.`);
+  };
+
+  return (
+    <div className="dashboard-view animate-fade-in">
+      <div className="dashboard-header">
+        <div>
+          <h1>Liquidation & Ordonnancement</h1>
+          <p>Gestion des Ordres de Paiement (DG) et Reçus de Décaissement (ACP)</p>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
+        <button 
+          className={`btn ${activeWorkflow === 'ordres' ? 'btn-primary' : ''}`}
+          onClick={() => setActiveWorkflow('ordres')}
+          style={{ padding: '0.75rem 1.5rem', background: activeWorkflow !== 'ordres' ? 'var(--surface-color)' : '' }}
+        >
+          <FileDown size={18} /> Ordres de Paiement (Espace Directeur)
+        </button>
+        <button 
+          className={`btn ${activeWorkflow === 'recus' ? 'btn-primary' : ''}`}
+          onClick={() => setActiveWorkflow('recus')}
+          style={{ padding: '0.75rem 1.5rem', background: activeWorkflow !== 'recus' ? 'var(--surface-color)' : 'var(--success)' }}
+        >
+          <FileCheck2 size={18} /> Reçus de Décaissement (Espace ACP)
+        </button>
+      </div>
+
+      <div className="glass-panel" style={{ padding: '2rem' }}>
+        {activeWorkflow === 'ordres' && (
+          <div className="animate-fade-in">
+             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid var(--glass-border)' }}>
+               <ShieldCheck size={24} color="var(--primary)" />
+               <div>
+                  <h3 style={{ margin: 0 }}>Génération des Ordres de Paiement (OP)</h3>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Espace réservé au Directeur Général. Seuls les engagements de dépenses validés par le contrôleur apparaissent ici.</p>
+               </div>
+             </div>
+             
+             <table style={{ width: '100%' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid var(--glass-border)', textAlign: 'left', color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}>
+                    <th style={{ padding: '0.75rem' }}># Réf Engagement</th>
+                    <th style={{ padding: '0.75rem' }}>Objet de la Dépense / BC</th>
+                    <th style={{ padding: '0.75rem' }}>Service Demandeur</th>
+                    <th style={{ padding: '0.75rem' }}>Montant</th>
+                    <th style={{ padding: '0.75rem' }}>Action DG</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {approvedEngagements.length === 0 && (
+                    <tr><td colSpan={5} style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>Aucun dossier en attente d'ordonnancement.</td></tr>
+                  )}
+                  {approvedEngagements.map(eng => (
+                    <tr key={eng.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                      <td style={{ padding: '1rem 0.75rem', fontWeight: 600 }}>{eng.id}</td>
+                      <td style={{ padding: '1rem 0.75rem' }}>{eng.obj}</td>
+                      <td style={{ padding: '1rem 0.75rem' }}>
+                        <span style={{ fontSize: '0.85rem', padding: '2px 8px', background: 'var(--surface-color-light)', borderRadius: '4px' }}>
+                          {eng.service}
+                        </span>
+                      </td>
+                      <td style={{ padding: '1rem 0.75rem', fontWeight: 600, color: 'var(--text-main)' }}>{eng.amt.toLocaleString()} XOF</td>
+                      <td style={{ padding: '1rem 0.75rem' }}>
+                        <button className="btn btn-primary" onClick={() => handlePayOrder(eng.id)} style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem' }}>
+                          Générer OP
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+             </table>
+          </div>
+        )}
+
+        {activeWorkflow === 'recus' && (
+          <div className="animate-fade-in">
+             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid var(--glass-border)' }}>
+               <CheckCircle size={24} color="var(--success)" />
+               <div>
+                  <h3 style={{ margin: 0 }}>Génération des Reçus de Décaissement (RD)</h3>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Espace réservé à l'Agent Comptable Particulier (ACP). Caisse et paiements effectifs selon les OP signés.</p>
+               </div>
+             </div>
+             
+             {/* Simulation de fichiers déjà OP'ed (ici on réutilise la liste pour la maquette) */}
+             <table style={{ width: '100%' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid var(--glass-border)', textAlign: 'left', color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}>
+                    <th style={{ padding: '0.75rem' }}># OP (Ordre Paiement)</th>
+                    <th style={{ padding: '0.75rem' }}>Bénéficiaire / Montant</th>
+                    <th style={{ padding: '0.75rem' }}>Date Signature DG</th>
+                    <th style={{ padding: '0.75rem' }}>Action ACP</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '1rem 0.75rem', fontWeight: 600 }}>OP-2026-1022</td>
+                    <td style={{ padding: '1rem 0.75rem' }}>SENELEC (4,500,000 XOF)</td>
+                    <td style={{ padding: '1rem 0.75rem', color: 'var(--text-muted)' }}>13/04/2026</td>
+                    <td style={{ padding: '1rem 0.75rem' }}>
+                      <button className="btn btn-primary" onClick={() => handleReceipt('OP-2026-1022')} style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem', background: 'var(--success)', border: 'none' }}>
+                        Payer & Émettre RD
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+             </table>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default OperationsPaiement;

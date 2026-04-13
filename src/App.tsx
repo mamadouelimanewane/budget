@@ -11,6 +11,8 @@ import ImportDocument from './pages/ImportDocument';
 import ExercicesPage from './pages/Exercices';
 import ArchivagePage from './pages/Archivage';
 import IAReportsPage from './pages/IAReports';
+import Parametres from './pages/Parametres';
+import OperationsPaiement from './pages/OperationsPaiement';
 import ExtendedModulePlaceholder from './components/ExtendedModulePlaceholder';
 import { BudgetProvider } from './context/BudgetContext';
 import './App.css';
@@ -32,8 +34,9 @@ function AppContent() {
       case 'commandes':
         return <ExtendedModulePlaceholder 
                   title="Bons de Commande & Réceptions" 
-                  desc="Génération automatique des bons de commande fournisseur." 
+                  desc="Génération automatique des bons de commande fournisseur de l'hôpital public." 
                   icon="📦" />;
+      case 'liquidations': return <OperationsPaiement />;
       case 'ged': return <ImportDocument />;
       case 'ia_reports': return <IAReportsPage />;
       case 'recettes': return <RecettesPage />;
@@ -45,6 +48,12 @@ function AppContent() {
       case 'audit': return <AuditPage />;
       case 'archivage': return <ArchivagePage />;
       case 'exercices': return <ExercicesPage />;
+      case 'parametres': return <Parametres />;
+      case 'delegations':
+        return <ExtendedModulePlaceholder 
+                  title="Délégations de Pouvoirs" 
+                  desc="Gestion stricte des droits de signature." 
+                  icon="✍️" />;
       default: return <Dashboard />;
     }
   };
