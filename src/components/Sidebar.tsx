@@ -1,9 +1,5 @@
-import React from 'react';
-import { 
-  LayoutDashboard, Wallet, FileText, Receipt, 
-  CreditCard, PieChart, Settings, Repeat, Briefcase, 
-  ShoppingCart, Package, ShieldCheck, CheckSquare, CloudUpload,
-  Calendar, Archive, MessageSquareDiff
+  Calendar, Archive, MessageSquareDiff, FlaskConical, 
+  Fingerprint, Share2, Globe, Activity
 } from 'lucide-react';
 
 import { useBudget } from '../context/BudgetContext';
@@ -26,18 +22,18 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
       
       <nav className="nav-menu">
         <div className="nav-group">
-          <div className="nav-group-title">{t('stats')}</div>
+          <div className="nav-group-title">Statistiques & Intelligence</div>
           <a onClick={() => setActiveTab('dashboard')} className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}>
             <LayoutDashboard size={18} />
             <span>Tableau de Bord</span>
           </a>
-        </div>
-
-        <div className="nav-group">
-          <div className="nav-group-title">Intelligence Artificielle</div>
+          <a onClick={() => setActiveTab('simulator')} className={`nav-item ${activeTab === 'simulator' ? 'active' : ''}`}>
+             <FlaskConical size={18} />
+             <span>{t('simulator')}</span>
+          </a>
           <a onClick={() => setActiveTab('ia_reports')} className={`nav-item ${activeTab === 'ia_reports' ? 'active' : ''}`}>
              <MessageSquareDiff size={18} />
-             <span>Rédaction de Rapports IA</span>
+             <span>Rédaction IA</span>
           </a>
           <a onClick={() => setActiveTab('ged')} className={`nav-item ${activeTab === 'ged' ? 'active' : ''}`}>
              <CloudUpload size={18} />
@@ -46,7 +42,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
         </div>
 
         <div className="nav-group">
-          <div className="nav-group-title">Préparation & Arbitrage</div>
+          <div className="nav-group-title">Budget & Arbitrage</div>
           <a onClick={() => setActiveTab('preparation')} className={`nav-item ${activeTab === 'preparation' ? 'active' : ''}`}>
             <FileText size={18} />
             <span>Préparation Budgétaire</span>
@@ -55,10 +51,6 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
             <Briefcase size={18} />
             <span>Allocation aux {t('service_term')}s</span>
           </a>
-        </div>
-
-        <div className="nav-group">
-          <div className="nav-group-title">Modifications</div>
           <a onClick={() => setActiveTab('dbm')} className={`nav-item ${activeTab === 'dbm' ? 'active' : ''}`}>
             <Repeat size={18} />
             <span>Saisie & Suivi DBM</span>
@@ -66,7 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
         </div>
 
         <div className="nav-group">
-          <div className="nav-group-title">Dépenses & Achats</div>
+          <div className="nav-group-title">Dépenses & Patrimoine</div>
           <a onClick={() => setActiveTab('engagements')} className={`nav-item ${activeTab === 'engagements' ? 'active' : ''}`}>
             <ShoppingCart size={18} />
             <span>{t('engagement')}</span>
@@ -82,18 +74,26 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
         </div>
 
         <div className="nav-group">
-          <div className="nav-group-title">Ressources</div>
+          <div className="nav-group-title">Ressources & Flux</div>
           <a onClick={() => setActiveTab('recettes')} className={`nav-item ${activeTab === 'recettes' ? 'active' : ''}`}>
             <CreditCard size={18} />
             <span>{t('recettes')}</span>
           </a>
+          <a onClick={() => setActiveTab('arbiter')} className={`nav-item ${activeTab === 'arbiter' ? 'active' : ''}`}>
+             <Activity size={18} />
+             <span>{t('arbiter')}</span>
+          </a>
         </div>
 
         <div className="nav-group">
-          <div className="nav-group-title">Conformité & Contrôle</div>
+          <div className="nav-group-title">Contrôle & Sécurité</div>
           <a onClick={() => setActiveTab('rapports')} className={`nav-item ${activeTab === 'rapports' ? 'active' : ''}`}>
             <PieChart size={18} />
             <span>États SYSCOHADA</span>
+          </a>
+          <a onClick={() => setActiveTab('security_hunter')} className={`nav-item ${activeTab === 'security_hunter' ? 'active' : ''}`}>
+             <Fingerprint size={18} />
+             <span>{t('security')}</span>
           </a>
           <a onClick={() => setActiveTab('audit')} className={`nav-item ${activeTab === 'audit' ? 'active' : ''}`}>
             <ShieldCheck size={18} />
@@ -110,6 +110,14 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
           <a onClick={() => setActiveTab('exercices')} className={`nav-item ${activeTab === 'exercices' ? 'active' : ''}`}>
             <Calendar size={18} />
             <span>Gestion des Exercices</span>
+          </a>
+          <a onClick={() => setActiveTab('connectors')} className={`nav-item ${activeTab === 'connectors' ? 'active' : ''}`}>
+             <Share2 size={18} />
+             <span>{t('connectors')}</span>
+          </a>
+          <a onClick={() => setActiveTab('parametres')} className={`nav-item ${activeTab === 'parametres' ? 'active' : ''}`}>
+            <Settings size={18} />
+            <span>Paramètres</span>
           </a>
         </div>
       </nav>

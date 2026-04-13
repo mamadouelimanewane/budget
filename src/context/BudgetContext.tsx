@@ -71,6 +71,30 @@ export interface Asset {
   currentValue: number;
 }
 
+export interface Anomaly {
+  id: string;
+  type: 'duplicate' | 'threshold_bypass' | 'unusual_amount';
+  severity: 'low' | 'medium' | 'high';
+  desc: string;
+  date: string;
+  relatedId: string;
+}
+
+export interface SimulationScenario {
+  id: string;
+  name: string;
+  date: string;
+  adjustments: { [key: string]: number }; // multiplication factors
+}
+
+export interface Connector {
+  id: string;
+  name: string;
+  status: 'connected' | 'error' | 'disconnected';
+  lastSync: string;
+  type: 'bank' | 'treasury' | 'hr';
+}
+
 export interface WorkflowStep {
   id: string;
   label: string;
@@ -105,6 +129,11 @@ interface BudgetContextType {
   amortizationMethod: 'linear' | 'declining';
   setAmortizationMethod: (method: 'linear' | 'declining') => void;
   getForecast: () => { totalProjected: number; status: 'safe' | 'warning' | 'critical' };
+  anomalies: Anomaly[];
+  scenarios: SimulationScenario[];
+  connectors: Connector[];
+  addScenario: (name: string, adjustments: { [key: string]: number }) => void;
+  deleteScenario: (id: string) => void;
 }
 
 const BudgetContext = createContext<BudgetContextType | undefined>(undefined);
@@ -126,6 +155,21 @@ export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) =>
   ]);
   const [amortizationMethod, setAmortizationMethod] = useState<'linear' | 'declining'>('linear');
 
+  const [anomalies, setAnomalies] = useState<Anomaly[]>([
+    { id: 'ANM-001', type: 'unusual_amount', severity: 'high', desc: 'Engagement ENG-2026-089 (DSI) dépasse de 150% la moyenne historique du mois d\'avril.', date: '12 Avr 2026', relatedId: 'ENG-2026-089' },
+    { id: 'ANM-002', type: 'threshold_bypass', severity: 'medium', desc: 'Possibilité de fractionnement détectée entre ENG-101 et ENG-102 (même fournisseur, montants complémentaires).', date: '10 Avr 2026', relatedId: 'ENG-101' }
+  ]);
+
+  const [scenarios, setScenarios] = useState<SimulationScenario[]>([
+    { id: 'SCN-1', name: 'Scénario Optimiste (+10% Subventions)', date: '13 Avr 2026', adjustments: { revenues: 1.1 } },
+    { id: 'SCN-2', name: 'Crise Économique (Inflation 15%)', date: '13 Avr 2026', adjustments: { expenses: 1.15 } }
+  ]);
+
+  const [connectors, setConnectors] = useState<Connector[]>([
+    { id: 'CON-1', name: 'Banque Centrale / Trésor', status: 'connected', lastSync: '13/04/2026 09:00', type: 'treasury' },
+    { id: 'CON-2', name: 'Système Paie (HR-Pro)', status: 'disconnected', lastSync: '10/04/2026 18:30', type: 'hr' }
+  ]);
+
   const dictionary = {
     entreprise: {
       app_title: 'SIGB Intelli - Corporate ERP',
@@ -137,7 +181,11 @@ export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) =>
       recettes: 'Flux de Revenus',
       audit: 'Audit & Commissariat aux Comptes',
       stats: 'Business Intelligence',
-      service_term: 'Département'
+      service_term: 'Département',
+      arbiter: 'Réconciliation IA (Banque)',
+      simulator: 'Lab Simulation Stratégique',
+      security: 'Anomaly Hunter (Sécurité)',
+      connectors: 'Hub Interopérabilité'
     },
     hospitalier: {
       app_title: 'SIGB Intelli - SI Hospitalier (HOGGY)',
@@ -149,7 +197,11 @@ export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) =>
       recettes: 'Recettes Hospitalières',
       audit: 'Contrôle État (IGE/IGF)',
       stats: 'Statistiques Sanitaires',
-      service_term: 'Unité / Service'
+      service_term: 'Unité / Service',
+      arbiter: 'Réconciliation Trésor / ACP',
+      simulator: 'Lab Simulation (Santé)',
+      security: 'Anomaly Hunter (IA LCB-FT)',
+      connectors: 'Passerelles État / Trésor'
     }
   };
 
@@ -284,13 +336,20 @@ export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) =>
     return { totalProjected: projected, status };
   };
 
+  const addScenario = (name: string, adjustments: { [key: string]: number }) => {
+    const newId = `SCN-${Math.floor(Math.random() * 1000)}`;
+    setScenarios([{ id: newId, name, adjustments, date: new Date().toLocaleDateString('fr-FR') }, ...scenarios]);
+    addLog('Mamadou Dia (DSI)', 'CREATION_SCENARIO', 'Lab Simulation', `Nouveau scénario de simulation : ${name}`);
+  };
+
+  const deleteScenario = (id: string) => {
+    setScenarios(scenarios.filter(s => s.id !== id));
+  };
+
   return (
-    <BudgetContext.Provider value={{
-      budgetLines, engagements, dbms, recettes, auditLogs, documents, industryMode,
-      setIndustryMode, updateBudgetLine, addEngagement, updateEngagementStatus, addDBM, approveDBM,
-      addRecette, updateRecetteStatus, addDocument, simulateDocAnalysis, t,
       workflowSteps, updateWorkflowThreshold, getNextStep,
-      assets, addAsset, amortizationMethod, setAmortizationMethod, getForecast
+      assets, addAsset, amortizationMethod, setAmortizationMethod, getForecast,
+      anomalies, scenarios, connectors, addScenario, deleteScenario
     }}>
       {children}
     </BudgetContext.Provider>

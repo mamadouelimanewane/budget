@@ -14,6 +14,10 @@ import IAReportsPage from './pages/IAReports';
 import Parametres from './pages/Parametres';
 import OperationsPaiement from './pages/OperationsPaiement';
 import AssetsPage from './pages/Assets';
+import Arbiter from './pages/Arbiter';
+import Simulator from './pages/Simulator';
+import SecurityHunter from './pages/SecurityHunter';
+import Connectors from './pages/Connectors';
 import ExtendedModulePlaceholder from './components/ExtendedModulePlaceholder';
 import { BudgetProvider } from './context/BudgetContext';
 import './App.css';
@@ -51,6 +55,10 @@ function AppContent() {
       case 'archivage': return <ArchivagePage />;
       case 'exercices': return <ExercicesPage />;
       case 'parametres': return <Parametres />;
+      case 'simulator': return <Simulator />;
+      case 'arbiter': return <Arbiter />;
+      case 'security_hunter': return <SecurityHunter />;
+      case 'connectors': return <Connectors />;
       case 'delegations':
         return <ExtendedModulePlaceholder 
                   title="Délégations de Pouvoirs" 
