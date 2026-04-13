@@ -56,6 +56,12 @@ const Parametres: React.FC = () => {
             style={{ justifyContent: 'flex-start', border: activeTab !== 'roles' ? '1px solid var(--glass-border)' : 'none', background: activeTab !== 'roles' ? 'transparent' : '' }}>
             <Shield size={18} /> Rôles et Accès Acteurs
           </button>
+          <button 
+            onClick={() => setActiveTab('workflow')}
+            className={`btn ${activeTab === 'workflow' ? 'btn-primary' : ''}`} 
+            style={{ justifyContent: 'flex-start', border: activeTab !== 'workflow' ? '1px solid var(--glass-border)' : 'none', background: activeTab !== 'workflow' ? 'transparent' : '' }}>
+            <Activity size={18} /> Circuits de Validation
+          </button>
         </div>
 
         {/* Contenu Paramètres */}
@@ -172,6 +178,41 @@ const Parametres: React.FC = () => {
                   ))}
                 </tbody>
               </table>
+            </div>
+          )}
+
+          {activeTab === 'workflow' && (
+            <div className="animate-fade-in">
+              <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                <Activity size={24} color="var(--primary)" /> Moteur de Validation Intelligente
+              </h2>
+              <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
+                Définissez les seuils de déclenchement pour chaque étape de validation. Les paliers inférieurs sont ignorés si le montant est en dessous du seuil.
+              </p>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                {(useBudget().workflowSteps).map((step) => (
+                  <div key={step.id} className="glass-panel" style={{ padding: '1.5rem', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.02)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                      <div>
+                        <h3 style={{ fontSize: '1.1rem', color: 'white' }}>{step.label}</h3>
+                        <span style={{ fontSize: '0.85rem', color: 'var(--primary)' }}>Rôle requis : {step.role}</span>
+                      </div>
+                      <div className="status-badge" style={{ background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)' }}>Actif</div>
+                    </div>
+                    
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                      <label style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Montant minimum (FCFA) :</label>
+                      <input 
+                        type="number" 
+                        value={step.threshold} 
+                        onChange={(e) => useBudget().updateWorkflowThreshold(step.id, parseInt(e.target.value, 10))}
+                        style={{ background: 'var(--surface-color-light)', border: '1px solid var(--glass-border)', color: 'white', padding: '0.5rem', borderRadius: '4px', width: '200px' }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 

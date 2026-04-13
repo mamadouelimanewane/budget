@@ -80,7 +80,7 @@ const OperationsPaiement: React.FC = () => {
                           {eng.service}
                         </span>
                       </td>
-                      <td style={{ padding: '1rem 0.75rem', fontWeight: 600, color: 'var(--text-main)' }}>{eng.amt.toLocaleString()} XOF</td>
+                      <td style={{ padding: '1rem 0.75rem', fontWeight: 600, color: 'var(--text-main)' }}>{eng.amt.toLocaleString()} FCFA</td>
                       <td style={{ padding: '1rem 0.75rem' }}>
                         <button className="btn btn-primary" onClick={() => handlePayOrder(eng.id)} style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem' }}>
                           Générer {isHospital ? 'OP' : 'Virement'}
@@ -116,7 +116,7 @@ const OperationsPaiement: React.FC = () => {
                 <tbody>
                   <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                     <td style={{ padding: '1rem 0.75rem', fontWeight: 600 }}>OP-2026-1022</td>
-                    <td style={{ padding: '1rem 0.75rem' }}>SENELEC (4,500,000 XOF)</td>
+                    <td style={{ padding: '1rem 0.75rem' }}>SENELEC (4,500,000 FCFA)</td>
                     <td style={{ padding: '1rem 0.75rem', color: 'var(--text-muted)' }}>13/04/2026</td>
                     <td style={{ padding: '1rem 0.75rem' }}>
                       <button className="btn btn-primary" onClick={() => handleReceipt(isHospital ? 'OP-2026-1022' : 'VIR-2026-1022')} style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem', background: 'var(--success)', border: 'none' }}>

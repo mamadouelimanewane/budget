@@ -4,7 +4,7 @@ import { useBudget } from '../context/BudgetContext';
 import Modal from '../components/Modal';
 
 const Engagements: React.FC = () => {
-  const { engagements, budgetLines, addEngagement, updateEngagementStatus, t } = useBudget();
+  const { engagements, budgetLines, addEngagement, updateEngagementStatus, t, getNextStep, workflowSteps } = useBudget();
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   // Nouveaux engagements state
@@ -26,14 +26,16 @@ const Engagements: React.FC = () => {
     setObj(''); setAmt(''); setBudg('');
   };
 
-  const getStatusBadge = (stat: string) => {
-    switch(stat) {
-      case 'besoin': return <span className="status-badge" style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)' }}>Brouillon / Demande</span>;
-      case 'visa': return <span className="status-badge status-pending" style={{ background: 'rgba(59, 130, 246, 0.1)', color: 'var(--primary)' }}>{t('visa_finance')}</span>;
-      case 'approved': return <span className="status-badge status-completed">Approuvé (Ready)</span>;
-      case 'rejected': return <span className="status-badge" style={{ background: 'rgba(239, 68, 68, 0.1)', color: 'var(--danger)', border: '1px solid rgba(239,68,68,0.2)' }}>Rejeté</span>;
-      default: return null;
-    }
+  const getStatusBadge = (eng: Engagement) => {
+    if (eng.stat === 'besoin') return <span className="status-badge" style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)' }}>Brouillon / Initial</span>;
+    if (eng.stat === 'approved') return <span className="status-badge status-completed">Approuvé (FCFA Payé)</span>;
+    if (eng.stat === 'rejected') return <span className="status-badge status-rejected">Rejeté</span>;
+    
+    // Dynamic step badge
+    const currentStep = workflowSteps.find(s => s.id === eng.stat);
+    return <span className="status-badge status-pending" style={{ background: 'rgba(59, 130, 246, 0.1)', color: 'var(--primary)' }}>
+      {currentStep ? `Validé: ${currentStep.label}` : eng.stat}
+    </span>;
   };
 
   return (
@@ -58,7 +60,7 @@ const Engagements: React.FC = () => {
             </div>
           </div>
           <div className="kpi-value" style={{ color: 'white', marginTop: '0.5rem' }}>
-            {budgetLines.reduce((acc, curr) => acc + curr.n, 0).toLocaleString()} <span style={{ fontSize: '1rem' }}>XOF</span>
+            {budgetLines.reduce((acc, curr) => acc + curr.n, 0).toLocaleString()} <span style={{ fontSize: '1rem' }}>FCFA</span>
           </div>
         </div>
         
@@ -106,23 +108,31 @@ const Engagements: React.FC = () => {
                   <td style={{ fontWeight: 500 }}>{eng.obj}</td>
                   <td>{eng.service}</td>
                   <td style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{eng.budg}</td>
-                  <td className="td-amount">{(eng.amt).toLocaleString()} XOF</td>
+                  <td className="td-amount">{(eng.amt).toLocaleString()} FCFA</td>
                   <td>
-                    {getStatusBadge(eng.stat)}
+                    {getStatusBadge(eng)}
                   </td>
                   <td>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      {eng.stat === 'besoin' && (
-                        <button className="btn-icon" style={{ color: 'var(--primary)' }} onClick={() => updateEngagementStatus(eng.id, 'visa')} title={t('visa_finance')}>
-                          <CheckCircle size={16} /> <span style={{fontSize: '0.75rem'}}>Viser</span>
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                      {getNextStep(eng) && getNextStep(eng) !== 'approved' && (
+                        <button 
+                          className="btn" 
+                          style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', background: 'var(--primary)', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                          onClick={() => updateEngagementStatus(eng.id, (getNextStep(eng) as any).id)}
+                        >
+                          {(getNextStep(eng) as any).label}
                         </button>
                       )}
-                      {eng.stat === 'visa' && (
-                        <button className="btn-icon" style={{ color: 'var(--success)' }} onClick={() => updateEngagementStatus(eng.id, 'approved')} title={t('approbation')}>
-                          <CheckCircle size={16} /> <span style={{fontSize: '0.75rem'}}>Approuver</span>
+                      {getNextStep(eng) === 'approved' && (
+                        <button 
+                          className="btn" 
+                          style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', background: 'var(--success)', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                          onClick={() => updateEngagementStatus(eng.id, 'approved')}
+                        >
+                          Approuver (Seuil OK)
                         </button>
                       )}
-                      {(eng.stat === 'besoin' || eng.stat === 'visa') && (
+                      {getNextStep(eng) && (
                         <button className="btn-icon" style={{ color: 'var(--danger)' }} onClick={() => updateEngagementStatus(eng.id, 'rejected')} title="Rejeter">
                           <XCircle size={16} />
                         </button>
@@ -162,7 +172,7 @@ const Engagements: React.FC = () => {
             </select>
           </div>
           <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Montant (XOF)</label>
+            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Montant (FCFA)</label>
             <input type="number" value={amt} onChange={e => setAmt(e.target.value)} required min={1} style={{ width: '100%', padding: '0.75rem', background: 'var(--surface-color-light)', border: '1px solid var(--glass-border)', color: 'white', borderRadius: '4px' }} />
           </div>
           <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', width: '100%' }}>Soumettre la demande</button>

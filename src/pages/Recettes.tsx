@@ -60,7 +60,7 @@ const RecettesPage: React.FC = () => {
             </div>
           </div>
           <div className="kpi-value" style={{ color: 'white', marginTop: '0.5rem' }}>
-            {totalEncaisse.toLocaleString()} <span style={{ fontSize: '1rem' }}>XOF</span>
+            {totalEncaisse.toLocaleString()} <span style={{ fontSize: '1rem' }}>FCFA</span>
           </div>
         </div>
         
@@ -85,7 +85,7 @@ const RecettesPage: React.FC = () => {
             </div>
           </div>
           <div className="kpi-value" style={{ color: 'white', marginTop: '0.5rem' }}>
-            {totalPrev.toLocaleString()} <span style={{ fontSize: '1rem' }}>XOF</span>
+            {totalPrev.toLocaleString()} <span style={{ fontSize: '1rem' }}>FCFA</span>
           </div>
         </div>
       </div>
@@ -110,7 +110,7 @@ const RecettesPage: React.FC = () => {
                 <th>Source / Bailleur</th>
                 <th>Compte</th>
                 <th>Date Em.</th>
-                <th>Montant (XOF)</th>
+                <th>Montant (FCFA)</th>
                 <th>Statut</th>
                 <th>Action</th>
               </tr>
@@ -182,7 +182,7 @@ const RecettesPage: React.FC = () => {
               </select>
             </div>
             <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Montant (XOF)</label>
+              <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Montant (FCFA)</label>
               <input type="number" value={montant} onChange={e => setMontant(e.target.value)} required min={1} style={{ width: '100%', padding: '0.75rem', background: 'var(--surface-color-light)', border: '1px solid var(--glass-border)', color: 'white', borderRadius: '4px' }} />
             </div>
           </div>

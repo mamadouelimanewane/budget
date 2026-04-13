@@ -74,7 +74,7 @@ const ImportDocument: React.FC = () => {
   const triggerFakeAnalysisCompleter = (id: string, name: string) => {
     const isFacture = name.toLowerCase().includes('facture') || name.toLowerCase().includes('inv');
     const data = isFacture
-        ? 'OCR [Facture]: MNT=4,500,500 XOF | Compte: 614 | Fournisseur: Senelec'
+        ? 'OCR [Facture]: MNT=4,500,500 FCFA | Compte: 614 | Fournisseur: Senelec'
         : 'NLP [Contrat/Titre]: Période=24 mois | Budget affecté: DSI | Valeur=12,000,000';
     simulateDocAnalysis(id, data);
   };

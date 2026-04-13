@@ -61,6 +61,13 @@ export interface DocumentGED {
   relatedModule?: string;
 }
 
+export interface WorkflowStep {
+  id: string;
+  label: string;
+  role: string;
+  threshold: number; // Montant min pour déclencher cette étape
+}
+
 interface BudgetContextType {
   budgetLines: BudgetLine[];
   engagements: Engagement[];
@@ -80,6 +87,9 @@ interface BudgetContextType {
   addDocument: (doc: Omit<DocumentGED, 'id' | 'uploadDate' | 'status'>) => void;
   simulateDocAnalysis: (id: string, extractedData: string) => void;
   t: (key: string) => string;
+  workflowSteps: WorkflowStep[];
+  updateWorkflowThreshold: (id: string, value: number) => void;
+  getNextStep: (eng: Engagement) => WorkflowStep | 'approved' | null;
 }
 
 const BudgetContext = createContext<BudgetContextType | undefined>(undefined);
@@ -88,6 +98,12 @@ export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) =>
   const [industryMode, setIndustryMode] = useState<'hospitalier' | 'entreprise'>('entreprise');
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([
     { id: 'LOG-88231', timestamp: new Date().toISOString(), user: 'Mamadou Dia (DSI)', action: 'CONNEXION_SSO', module: 'Auth', detail: 'Authentification via SAML 2.0 réussie', ip: '197.214.23.11' }
+  ]);
+
+  const [workflowSteps, setWorkflowSteps] = useState<WorkflowStep[]>([
+    { id: 'step-manager', label: 'Validation Manager', role: 'Direction des Achats', threshold: 0 },
+    { id: 'step-finance', label: 'Contrôle DAF', role: 'Directeur Financier (DAF)', threshold: 1000000 },
+    { id: 'step-dg', label: 'Approbation DG / Board', role: 'PDG / General Manager', threshold: 5000000 },
   ]);
 
   const dictionary = {
@@ -144,7 +160,7 @@ export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) =>
   const [recettes, setRecettes] = useState<Recette[]>([]);
   
   const [documents, setDocuments] = useState<DocumentGED[]>([
-    { id: 'DOC-1234', fileName: 'Facture_Senelec_0426.pdf', type: 'PDF', size: '2.4 MB', uploadDate: '10 Avr 2026', status: 'analyzed', extractedData: 'Montant: 4,500,000 XOF | Identifié Ligne: 613', relatedModule: 'Factures & Paiements' },
+    { id: 'DOC-1234', fileName: 'Facture_Senelec_0426.pdf', type: 'PDF', size: '2.4 MB', uploadDate: '10 Avr 2026', status: 'analyzed', extractedData: 'Montant: 4,500,000 FCFA | Identifié Ligne: 613', relatedModule: 'Factures & Paiements' },
     { id: 'DOC-1235', fileName: 'Convention_Banque_Mondiale.docx', type: 'Word', size: '1.1 MB', uploadDate: '08 Avr 2026', status: 'analyzed', extractedData: 'Intitulé Fonds | Date de Clôture 2029', relatedModule: 'Recettes' }
   ]);
 
@@ -156,12 +172,41 @@ export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) =>
   const addEngagement = (eng: Omit<Engagement, 'id' | 'date' | 'stat'>) => {
     const newId = `ENG-2026-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
     setEngagements([{ ...eng, id: newId, date: new Date().toLocaleDateString('fr-FR'), stat: 'besoin' }, ...engagements]);
-    addLog('Mamadou Dia (DSI)', 'EXPRESSION_BESOIN', 'Engagements', `Création demande: ${newId} (${eng.amt} XOF)`);
+    addLog('Mamadou Dia (DSI)', 'EXPRESSION_BESOIN', 'Engagements', `Création demande: ${newId} (${eng.amt} FCFA)`);
   };
 
   const updateEngagementStatus = (id: string, stat: Engagement['stat']) => {
     setEngagements(prev => prev.map(e => e.id === id ? { ...e, stat } : e));
     addLog('Mamadou Dia (DSI)', 'VISAS_ENGAGEMENT', 'Engagements', `Changement statut ${id} -> ${stat.toUpperCase()}`);
+  };
+
+  const updateWorkflowThreshold = (id: string, value: number) => {
+    setWorkflowSteps(prev => prev.map(s => s.id === id ? { ...s, threshold: value } : s));
+    addLog('Mamadou Dia (DSI)', 'CONFIG_WORKFLOW', 'Paramètres', `Mise à jour seuil étape ${id} : ${value} FCFA`);
+  };
+
+  const getNextStep = (eng: Engagement): WorkflowStep | 'approved' | null => {
+    if (eng.stat === 'approved' || eng.stat === 'rejected') return null;
+    
+    // Troubleshooting: find steps that are active for this amount
+    const activeSteps = workflowSteps.filter(s => eng.amt >= s.threshold);
+    
+    if (eng.stat === 'besoin') {
+      return activeSteps.length > 0 ? activeSteps[0] : 'approved';
+    }
+    
+    // If current status is a step ID, find the next one
+    const currentIndex = activeSteps.findIndex(s => s.id === eng.stat);
+    if (currentIndex === -1) {
+      // Current stat might be an old hardcoded one or not in active steps
+      return activeSteps.length > 0 ? activeSteps[0] : 'approved';
+    }
+    
+    if (currentIndex < activeSteps.length - 1) {
+      return activeSteps[currentIndex + 1];
+    }
+    
+    return 'approved';
   };
 
   const addDBM = (dbm: Omit<DBM, 'id' | 'date' | 'stat'>) => {
@@ -201,7 +246,8 @@ export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) =>
     <BudgetContext.Provider value={{
       budgetLines, engagements, dbms, recettes, auditLogs, documents, industryMode,
       setIndustryMode, updateBudgetLine, addEngagement, updateEngagementStatus, addDBM, approveDBM,
-      addRecette, updateRecetteStatus, addDocument, simulateDocAnalysis, t
+      addRecette, updateRecetteStatus, addDocument, simulateDocAnalysis, t,
+      workflowSteps, updateWorkflowThreshold, getNextStep
     }}>
       {children}
     </BudgetContext.Provider>

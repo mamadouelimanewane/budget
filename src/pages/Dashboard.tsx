@@ -7,7 +7,7 @@ import { useBudget } from '../context/BudgetContext';
 
 const Dashboard: React.FC = () => {
   const { budgetLines, engagements, dbms, t, industryMode } = useBudget();
-  const [currency, setCurrency] = useState('XOF');
+  const [currency, setCurrency] = useState('FCFA');
 
   const isHospital = industryMode === 'hospitalier';
 
@@ -24,7 +24,7 @@ const Dashboard: React.FC = () => {
   ];
 
   const formatCurrency = (amt: number) => {
-    if(currency === 'XOF') return amt.toLocaleString() + ' XOF';
+    if(currency === 'FCFA') return amt.toLocaleString() + ' FCFA';
     if(currency === 'EUR') return (amt / 655.957).toLocaleString(undefined, { maximumFractionDigits: 0 }) + ' €';
     if(currency === 'USD') return (amt / 600).toLocaleString(undefined, { maximumFractionDigits: 0 }) + ' $';
     return amt.toLocaleString();
@@ -46,7 +46,7 @@ const Dashboard: React.FC = () => {
               onChange={e => setCurrency(e.target.value)}
               style={{ background: 'transparent', color: 'white', border: 'none', outline: 'none', fontWeight: 600, cursor: 'pointer' }}
             >
-              <option value="XOF" style={{ color: 'black' }}>XOF (FCFA)</option>
+              <option value="FCFA" style={{ color: 'black' }}>FCFA (FCFA)</option>
               <option value="EUR" style={{ color: 'black' }}>EUR (€)</option>
               <option value="USD" style={{ color: 'black' }}>USD ($)</option>
             </select>

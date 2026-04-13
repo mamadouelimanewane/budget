@@ -69,7 +69,7 @@ const DBMPage: React.FC = () => {
                   <td style={{ fontWeight: 500 }}>{dbm.motif}</td>
                   <td style={{ color: 'var(--danger)', fontSize: '0.9rem' }}>{dbm.sourceLine}</td>
                   <td style={{ color: 'var(--success)', fontSize: '0.9rem' }}>{dbm.targetLine}</td>
-                  <td className="td-amount">{(dbm.amt).toLocaleString()} XOF</td>
+                  <td className="td-amount">{(dbm.amt).toLocaleString()} FCFA</td>
                   <td>
                     {dbm.stat === 'pending' ? (
                        <span className="status-badge status-pending">En Attente Validation</span>
@@ -117,7 +117,7 @@ const DBMPage: React.FC = () => {
             </select>
           </div>
           <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Montant Transféré (XOF)</label>
+            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Montant Transféré (FCFA)</label>
             <input type="number" value={amt} onChange={e => setAmt(e.target.value)} required min={1} style={{ width: '100%', padding: '0.75rem', background: 'var(--surface-color-light)', border: '1px solid var(--glass-border)', color: 'white', borderRadius: '4px' }} />
           </div>
           <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', width: '100%' }}>Créer la DBM</button>
