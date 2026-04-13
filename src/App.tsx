@@ -13,6 +13,7 @@ import ArchivagePage from './pages/Archivage';
 import IAReportsPage from './pages/IAReports';
 import Parametres from './pages/Parametres';
 import OperationsPaiement from './pages/OperationsPaiement';
+import AssetsPage from './pages/Assets';
 import ExtendedModulePlaceholder from './components/ExtendedModulePlaceholder';
 import { BudgetProvider } from './context/BudgetContext';
 import './App.css';
@@ -37,6 +38,7 @@ function AppContent() {
                   desc="Génération automatique des bons de commande fournisseur de l'hôpital public." 
                   icon="📦" />;
       case 'liquidations': return <OperationsPaiement />;
+      case 'assets': return <AssetsPage />;
       case 'ged': return <ImportDocument />;
       case 'ia_reports': return <IAReportsPage />;
       case 'recettes': return <RecettesPage />;

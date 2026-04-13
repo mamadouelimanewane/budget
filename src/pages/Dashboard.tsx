@@ -4,10 +4,13 @@ import {
   BarChart2, ChevronDown, CheckCircle, Repeat, Sparkles, CreditCard, Bell
 } from 'lucide-react';
 import { useBudget } from '../context/BudgetContext';
+import BudgetFlow from '../components/BudgetFlow';
 
 const Dashboard: React.FC = () => {
-  const { budgetLines, engagements, dbms, t, industryMode } = useBudget();
+  const { budgetLines, engagements, dbms, recettes, t, industryMode, getForecast } = useBudget();
   const [currency, setCurrency] = useState('FCFA');
+
+  const { totalProjected, status } = getForecast();
 
   const isHospital = industryMode === 'hospitalier';
 
@@ -57,14 +60,35 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* INTELLIGENT ALERTS BANNER (BENCHMARK FEATURE) */}
-      <div style={{ marginBottom: '2rem', display: 'flex', gap: '1rem' }}>
-        <div style={{ background: 'linear-gradient(90deg, rgba(239, 68, 68, 0.1), transparent)', borderLeft: '4px solid var(--danger)', padding: '1rem', borderRadius: '4px', flex: 1, display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Bell size={20} color="var(--danger)" />
+        </div>
+      </div>
+
+      {/* SMART FORECAST BAR */}
+      <div style={{ 
+        marginBottom: '2rem', 
+        padding: '1.25rem', 
+        borderRadius: '12px', 
+        background: status === 'critical' ? 'rgba(239, 68, 68, 0.15)' : status === 'warning' ? 'rgba(245, 158, 11, 0.15)' : 'rgba(16, 185, 129, 0.15)',
+        border: `1px solid ${status === 'critical' ? 'var(--danger)' : status === 'warning' ? 'var(--warning)' : 'var(--success)'}`,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <Sparkles size={24} color={status === 'critical' ? 'var(--danger)' : status === 'warning' ? 'var(--warning)' : 'var(--success)'} />
           <div>
-            <span style={{ fontWeight: 600, color: 'white', display: 'block' }}>Alerte de Dépassement Budgétaire</span>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Ligne 614 (Entretien) atteint 85% de son plafond. Blocage automatique à 95%.</span>
+            <h4 style={{ margin: 0, fontSize: '1rem' }}>Moteur Prédictif IA : Projection de fin d'année</h4>
+            <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>Basé sur le rythme de consommation actuel (4 mois écoulés)</p>
           </div>
+        </div>
+        <div style={{ textAlign: 'right' }}>
+          <div style={{ fontSize: '1.25rem', fontWeight: 700, color: status === 'critical' ? 'var(--danger)' : 'white' }}>
+            {formatCurrency(totalProjected)}
+          </div>
+          <span className={`kpi-badge ${status === 'safe' ? 'positive' : status === 'warning' ? 'warning' : 'negative'}`} style={{ fontSize: '0.75rem' }}>
+             {status === 'safe' ? 'Dans les limites' : status === 'warning' ? 'Risque de dépassement' : 'Dépassement Critique Projeté'}
+          </span>
         </div>
       </div>
 
@@ -108,7 +132,21 @@ const Dashboard: React.FC = () => {
             Examiner pour Visa
           </button>
         </div>
+        </div>
       </div>
+
+      <BudgetFlow 
+        sources={[
+          { label: 'Bailleurs de Fonds', value: (dotationInitiale * 0.4).toLocaleString(), color: '#10b981' },
+          { label: 'Recettes Propres', value: (dotationInitiale * 0.35).toLocaleString(), color: '#3b82f6' },
+          { label: 'Subventions État', value: (dotationInitiale * 0.25).toLocaleString(), color: '#f59e0b' }
+        ]}
+        destinations={[
+          { label: 'Fonctionnement', value: (engagementsTotal * 0.6).toLocaleString(), color: '#ef4444' },
+          { label: 'Investissements', value: (engagementsTotal * 0.25).toLocaleString(), color: '#8b5cf6' },
+          { label: 'Masse Salariale', value: (engagementsTotal * 0.15).toLocaleString(), color: '#06b6d4' }
+        ]}
+      />
 
       <div className="charts-grid">
         <div className="chart-card glass-panel">

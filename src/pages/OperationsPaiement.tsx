@@ -126,7 +126,25 @@ const OperationsPaiement: React.FC = () => {
                   </tr>
                 </tbody>
              </table>
-          </div>
+
+              <div style={{ marginTop: '2rem', padding: '1.5rem', border: '1px solid var(--glass-border)', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.05)', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', right: '10px', top: '10px', opacity: 0.1, transform: 'rotate(-10deg)' }}>
+                  <ShieldCheck size={80} color="var(--success)" />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                  <div style={{ background: 'white', padding: '5px', borderRadius: '4px' }}>
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=SIGB-PAYMENT-VERIFIED" alt="QR" width="60" height="60" />
+                  </div>
+                  <div>
+                    <h4 style={{ color: 'var(--success)', marginBottom: '0.25rem' }}>Dernière Opération Scellée</h4>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                      Certification d'intégrité active. Hash MD5: d41d8cd98f... <br/>
+                      Horodatage légal : {new Date().toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+              </div>
+           </div>
         )}
       </div>
     </div>

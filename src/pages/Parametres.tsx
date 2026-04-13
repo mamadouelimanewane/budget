@@ -147,8 +147,32 @@ const Parametres: React.FC = () => {
           {activeTab === 'roles' && (
             <div className="animate-fade-in">
               <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-                <Shield size={24} color="var(--primary)" /> Gestion des Acteurs et Privilèges
+                <Shield size={24} color="var(--primary)" /> Configuration Stratégique & Acteurs
               </h2>
+              
+              <div className="glass-panel" style={{ padding: '1.5rem', marginBottom: '2rem', border: '1px solid var(--primary)33' }}>
+                <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>Règle d'Amortissement Globale</h3>
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                   <button 
+                    onClick={() => useBudget().setAmortizationMethod('linear')}
+                    className={`btn ${useBudget().amortizationMethod === 'linear' ? 'btn-primary' : ''}`}
+                    style={{ background: useBudget().amortizationMethod !== 'linear' ? 'transparent' : '', border: '1px solid var(--glass-border)' }}>
+                     Linéaire (Standard)
+                   </button>
+                   <button 
+                    onClick={() => useBudget().setAmortizationMethod('declining')}
+                    className={`btn ${useBudget().amortizationMethod === 'declining' ? 'btn-primary' : ''}`}
+                    style={{ background: useBudget().amortizationMethod !== 'declining' ? 'transparent' : '', border: '1px solid var(--glass-border)' }}>
+                     Dégressif (Agressif)
+                   </button>
+                </div>
+                <p style={{ marginTop: '0.75rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  {useBudget().amortizationMethod === 'linear' 
+                    ? 'La valeur de l\'actif diminue de manière constante chaque année.'
+                    : 'L\'amortissement est plus important les premières années (DDB Factor 2.0).'}
+                </p>
+              </div>
+
               <table style={{ width: '100%' }}>
                 <thead>
                   <tr style={{ borderBottom: '1px solid var(--glass-border)', textAlign: 'left' }}>

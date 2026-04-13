@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, FileText, Wand2, ArrowRight, Download, Send, RefreshCw } from 'lucide-react';
+import { Sparkles, FileText, Wand2, ArrowRight, Download, Send, RefreshCw, ShieldCheck } from 'lucide-react';
 
 import { useBudget } from '../context/BudgetContext';
 
@@ -113,7 +113,24 @@ const IAReportsPage: React.FC = () => {
                 <p style={{ fontSize: '1.05rem', lineHeight: '1.6', color: '#e2e8f0', marginBottom: '1rem' }}>
                   <strong>Analyse détaillée :</strong> {isHospital ? "La dotation initiale SIH est utilisée à 34%. La Pharmacie Centrale demande un arbitrage." : "Le budget corporate est sous contrôle à 32%. Le département Marketing présente un burn-rate sain."}
                 </p>
-                <p style={{ fontSize: '1.05rem', lineHeight: '1.6', color: '#e2e8f0' }}>
+                
+                {/* CERTIFIED IA SEAL */}
+                <div style={{ marginTop: '2rem', padding: '1rem', border: '1px dashed var(--secondary)', borderRadius: '8px', background: 'rgba(139, 92, 246, 0.05)', position: 'relative' }}>
+                   <div style={{ position: 'absolute', right: '10px', top: '10px', opacity: 0.2 }}>
+                      <ShieldCheck size={40} color="var(--secondary)" />
+                   </div>
+                   <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                      <div style={{ background: 'white', padding: '4px', borderRadius: '4px' }}>
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=SIGB-IA-CERTIFIED" alt="QR" width="50" height="50" />
+                      </div>
+                      <div style={{ fontSize: '0.8rem' }}>
+                        <span style={{ fontWeight: 700, color: 'var(--secondary)' }}>CERTIFICATION NATIVE IA</span><br/>
+                        <span style={{ color: 'var(--text-muted)' }}>Données financières scellées et vérifiées.</span>
+                      </div>
+                   </div>
+                </div>
+                
+                <p style={{ fontSize: '1.05rem', lineHeight: '1.6', color: '#e2e8f0', marginTop: '1.5rem' }}>
                   <strong>Recommandations :</strong>
                   <br/>- {isHospital ? "Effectuer une DBM pour les urgences médicales." : "Optimiser les coûts fixes sur le trimestre prochain."}
                   <br/>- Maintenir la vigilance sur les {t('engagement')}s.

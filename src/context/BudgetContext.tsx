@@ -61,6 +61,16 @@ export interface DocumentGED {
   relatedModule?: string;
 }
 
+export interface Asset {
+  id: string;
+  name: string;
+  category: string;
+  acquisitionDate: string;
+  cost: number;
+  lifeSpan: number; // en années
+  currentValue: number;
+}
+
 export interface WorkflowStep {
   id: string;
   label: string;
@@ -90,6 +100,11 @@ interface BudgetContextType {
   workflowSteps: WorkflowStep[];
   updateWorkflowThreshold: (id: string, value: number) => void;
   getNextStep: (eng: Engagement) => WorkflowStep | 'approved' | null;
+  assets: Asset[];
+  addAsset: (asset: Omit<Asset, 'id' | 'currentValue'>) => void;
+  amortizationMethod: 'linear' | 'declining';
+  setAmortizationMethod: (method: 'linear' | 'declining') => void;
+  getForecast: () => { totalProjected: number; status: 'safe' | 'warning' | 'critical' };
 }
 
 const BudgetContext = createContext<BudgetContextType | undefined>(undefined);
@@ -105,6 +120,11 @@ export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) =>
     { id: 'step-finance', label: 'Contrôle DAF', role: 'Directeur Financier (DAF)', threshold: 1000000 },
     { id: 'step-dg', label: 'Approbation DG / Board', role: 'PDG / General Manager', threshold: 5000000 },
   ]);
+
+  const [assets, setAssets] = useState<Asset[]>([
+    { id: 'AST-001', name: industryMode === 'hospitalier' ? 'Scanner IRM Philips' : 'Serveur GPU A100', category: 'Matériel', acquisitionDate: '01/01/2026', cost: 45000000, lifeSpan: 5, currentValue: 42000000 }
+  ]);
+  const [amortizationMethod, setAmortizationMethod] = useState<'linear' | 'declining'>('linear');
 
   const dictionary = {
     entreprise: {
@@ -242,12 +262,35 @@ export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) =>
     addLog('Assistant IA (Scanner)', 'OCR_EXTRACTION', 'Module IA', `Analyse IA terminée pour Doc ${id}`);
   };
 
+  const addAsset = (ast: Omit<Asset, 'id' | 'currentValue'>) => {
+    const newId = `AST-${Math.floor(Math.random() * 1000)}`;
+    setAssets(prev => [{ ...ast, id: newId, currentValue: ast.cost }, ...prev]);
+    addLog('Mamadou Dia (DSI)', 'AJOUT_ACTIF', 'Patrimoine', `Nouvel actif immobilisé : ${ast.name}`);
+  };
+
+  const getForecast = () => {
+    const totalEng = engagements.reduce((acc, curr) => acc + curr.amt, 0);
+    const totalAllocated = budgetLines.reduce((acc, curr) => acc + curr.n1, 0);
+    
+    // Simulating 4 months elapsed for demo
+    const monthsElapsed = 4;
+    const monthlyBurn = totalEng / monthsElapsed;
+    const projected = monthlyBurn * 12;
+    
+    let status: 'safe' | 'warning' | 'critical' = 'safe';
+    if (projected > totalAllocated) status = 'critical';
+    else if (projected > totalAllocated * 0.85) status = 'warning';
+    
+    return { totalProjected: projected, status };
+  };
+
   return (
     <BudgetContext.Provider value={{
       budgetLines, engagements, dbms, recettes, auditLogs, documents, industryMode,
       setIndustryMode, updateBudgetLine, addEngagement, updateEngagementStatus, addDBM, approveDBM,
       addRecette, updateRecetteStatus, addDocument, simulateDocAnalysis, t,
-      workflowSteps, updateWorkflowThreshold, getNextStep
+      workflowSteps, updateWorkflowThreshold, getNextStep,
+      assets, addAsset, amortizationMethod, setAmortizationMethod, getForecast
     }}>
       {children}
     </BudgetContext.Provider>

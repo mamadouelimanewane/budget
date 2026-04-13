@@ -75,6 +75,10 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
             <Package size={18} />
             <span>Commandes & Réceptions</span>
           </a>
+          <a onClick={() => setActiveTab('assets')} className={`nav-item ${activeTab === 'assets' ? 'active' : ''}`}>
+             <Package size={18} />
+             <span>Patrimoine & Actifs</span>
+          </a>
         </div>
 
         <div className="nav-group">
