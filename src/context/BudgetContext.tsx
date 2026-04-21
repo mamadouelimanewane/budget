@@ -154,7 +154,7 @@ interface BudgetContextType {
   updateEngagementStatus: (id: string, status: Engagement['stat']) => void;
   addDBM: (dbm: Omit<DBM, 'id' | 'date' | 'stat'>) => void;
   approveDBM: (id: string) => void;
-  addRecette: (recette: Omit<Recette, 'id' | 'date'>) => void;
+  addRecette: (recette: Omit<Recette, 'id' | 'date'> & { stat?: Recette['stat'] }) => void;
   updateRecetteStatus: (id: string, stat: Recette['stat']) => void;
   addDocument: (doc: Omit<DocumentGED, 'id' | 'uploadDate' | 'status'>) => void;
   simulateDocAnalysis: (id: string, extractedData: string) => void;
@@ -304,7 +304,7 @@ export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) =>
   ]);
 
   const [engagements, setEngagements] = useState<Engagement[]>([
-    { id: 'ENG-2026-089', obj: 'Renouvellement Licences Oracle', service: 'DSI', amt: 25000000, budg: '614 - Entretien et réparations', stat: 'pending', date: '12 Avr 2026' }
+    { id: 'ENG-2026-089', obj: 'Renouvellement Licences Oracle', service: 'DSI', amt: 25000000, budg: '614 - Entretien et réparations', stat: 'besoin', date: '12 Avr 2026' }
   ]);
 
   const [dbms, setDbms] = useState<DBM[]>([]);

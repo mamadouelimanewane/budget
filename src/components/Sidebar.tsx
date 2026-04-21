@@ -1,3 +1,9 @@
+import React from 'react';
+import {
+  LayoutDashboard, FileText, Briefcase, Repeat, ShoppingCart, Package,
+  CreditCard, Activity, PieChart, ShieldCheck, Calendar, Settings,
+  Archive, Share2, Fingerprint, FlaskConical, MessageSquareDiff,
+  CloudUpload, Wallet,
   Smartphone, Presentation, Zap, Lightbulb,
   Brain, Network, Award
 } from 'lucide-react';
@@ -39,6 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
              <CloudUpload size={18} />
              <span>Scanner IA & GED</span>
           </a>
+        </div>
         <div className="nav-group" style={{ background: 'linear-gradient(90deg, rgba(59, 130, 246, 0.05) 0%, transparent 100%)', borderLeft: '3px solid var(--primary)' }}>
           <div className="nav-group-title" style={{ color: 'var(--primary)', fontWeight: 800 }}>INTEL SINGULARITY</div>
           <a onClick={() => setActiveTab('deepmind_core')} className={`nav-item ${activeTab === 'deepmind_core' ? 'active' : ''}`}>

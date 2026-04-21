@@ -7,11 +7,11 @@ interface FlowNode {
 }
 
 interface BudgetFlowProps {
-  sources: FlowNode[];
-  destinations: FlowNode[];
+  sources?: FlowNode[];
+  destinations?: FlowNode[];
 }
 
-const BudgetFlow: React.FC<BudgetFlowProps> = ({ sources, destinations }) => {
+const BudgetFlow: React.FC<BudgetFlowProps> = ({ sources = [], destinations = [] }) => {
   return (
     <div className="glass-panel" style={{ padding: '2rem', marginBottom: '2rem', position: 'relative', overflow: 'hidden' }}>
       <h3 style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>

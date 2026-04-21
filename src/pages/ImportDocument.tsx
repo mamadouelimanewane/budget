@@ -93,7 +93,8 @@ const ImportDocument: React.FC = () => {
         titre: `Titre extrait: ${doc.fileName}`,
         source: 'AI-Extraction',
         compte: '701',
-        montant: 12000000
+        montant: 12000000,
+        stat: 'previsionnel'
       });
       alert(`${t('recettes')} créé automatiquement à partir du document.`);
     }

@@ -19,7 +19,7 @@ const Dashboard: React.FC = () => {
   const dotationModifiee = dotationInitiale + dbms.filter(d => d.stat === 'approved').reduce((acc, curr) => acc + curr.amt, 0) - dbms.filter(d => d.stat === 'approved').reduce((acc, curr) => acc + curr.amt, 0); // Logic: DBM changes the shape globally, here simplified.
   const engagementsTotal = engagements.reduce((acc, curr) => acc + curr.amt, 0);
   const tauxConsommation = ((engagementsTotal / dotationInitiale) * 100).toFixed(1);
-  const engagementsEnAttente = engagements.filter(e => e.stat === 'pending' || e.stat === 'besoin').length;
+  const engagementsEnAttente = engagements.filter(e => e.stat === 'besoin' || e.stat === 'visa').length;
 
   const abonnementsSaaS = [
     { name: 'Microsoft 365', amount: 1500000, frequency: 'Mensuel', nextDate: '15 Avr' },
@@ -57,9 +57,6 @@ const Dashboard: React.FC = () => {
           <button className="btn btn-primary">
             Export Rapport PDF <ChevronDown size={16} />
           </button>
-        </div>
-      </div>
-
         </div>
       </div>
 
@@ -131,7 +128,6 @@ const Dashboard: React.FC = () => {
           <button className="btn btn-primary" style={{ marginTop: '0.5rem', fontSize: '0.8rem', padding: '0.4rem' }}>
             Examiner pour Visa
           </button>
-        </div>
         </div>
       </div>
 

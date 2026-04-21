@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Receipt, FileCheck, Search, Filter, AlertTriangle, Plus, CheckCircle, XCircle } from 'lucide-react';
-import { useBudget } from '../context/BudgetContext';
+import { useBudget, Engagement } from '../context/BudgetContext';
 import Modal from '../components/Modal';
 
 const Engagements: React.FC = () => {
@@ -72,7 +72,7 @@ const Engagements: React.FC = () => {
             </div>
           </div>
           <div className="kpi-value" style={{ color: 'white', marginTop: '0.5rem' }}>
-            {engagements.filter(e => e.stat === 'besoin' || e.stat === 'pending').length} Dossiers
+            {engagements.filter(e => e.stat === 'besoin' || e.stat === 'visa').length} Dossiers
           </div>
         </div>
       </div>
