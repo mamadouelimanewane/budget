@@ -175,7 +175,7 @@ const Engagements: React.FC = () => {
             <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Montant (FCFA)</label>
             <input type="number" value={amt} onChange={e => setAmt(e.target.value)} required min={1} style={{ width: '100%', padding: '0.75rem', background: 'var(--surface-color-light)', border: '1px solid var(--glass-border)', color: 'white', borderRadius: '4px' }} />
           </div>
-          <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', width: '100%' }}>Soumettre la demande</button>
+          <button onClick={() => alert('Demande soumise. En attente de visa hiérarchique.')} type="submit" className="btn btn-primary" style={{ marginTop: '1rem', width: '100%' }}>Soumettre la demande</button>
         </form>
       </Modal>
     </div>

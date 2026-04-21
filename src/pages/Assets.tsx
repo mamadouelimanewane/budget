@@ -43,7 +43,7 @@ const Assets: React.FC = () => {
           <p>Suivi des immobilisations, amortissements et inventaire {industryMode === 'hospitalier' ? 'médical' : 'corporate'}</p>
         </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
-          <button className="btn" style={{ background: 'var(--surface-color-light)', border: '1px solid var(--glass-border)', color: 'white' }}>
+          <button onClick={() => alert('Export Excel en cours... Fichier généré : Patrimoine_Actifs_2026.xlsx')} className="btn" style={{ background: 'var(--surface-color-light)', border: '1px solid var(--glass-border)', color: 'white' }}>
             <Download size={18} /> Export Excel
           </button>
           <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>
@@ -152,7 +152,7 @@ const Assets: React.FC = () => {
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
                 <button type="button" className="btn" onClick={() => setIsModalOpen(false)} style={{ flex: 1 }}>Annuler</button>
-                <button type="submit" className="btn btn-primary" style={{ flex: 1 }}>Ajouter au Patrimoine</button>
+                <button onClick={() => alert('Formulaire d\'ajout d\'actif ouvert.')} type="submit" className="btn btn-primary" style={{ flex: 1 }}>Ajouter au Patrimoine</button>
               </div>
             </form>
           </div>

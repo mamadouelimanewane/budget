@@ -84,7 +84,7 @@ const ExercicesPage: React.FC = () => {
                      <p style={{ fontSize: '0.9rem', color: 'var(--text-main)', marginBottom: '1rem' }}>
                        La clôture génère les écritures de report (Report à nouveau), verrouille les engagements de l'année, et prépare le rapport d'exécution final pour les audits.
                      </p>
-                     <button className="btn" style={{ background: 'var(--warning)', color: 'white', border: 'none' }}>Initier procédure de clôture</button>
+                     <button onClick={() => alert('Procédure de clôture initiée. Vérification des engagements en cours...')} className="btn" style={{ background: 'var(--warning)', color: 'white', border: 'none' }}>Initier procédure de clôture</button>
                    </div>
                 </div>
               )}
@@ -98,7 +98,7 @@ const ExercicesPage: React.FC = () => {
                      <p style={{ fontSize: '0.9rem', color: 'var(--text-main)', marginBottom: '1rem' }}>
                        Ouvrir cet exercice affectera les lignes préparées pour exécution. Les dotations N+1 deviendront les dotations de l'année N active.
                      </p>
-                     <button className="btn" style={{ background: 'var(--success)', color: 'white', border: 'none' }}>Approuver et Ouvrir {y.year}</button>
+                     <button onClick={() => alert('Exercice approuvé et ouvert. Budget initial chargé.')} className="btn" style={{ background: 'var(--success)', color: 'white', border: 'none' }}>Approuver et Ouvrir {y.year}</button>
                    </div>
                 </div>
               )}
@@ -111,7 +111,7 @@ const ExercicesPage: React.FC = () => {
                   <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
                     Aucune modification ne peut être apportée sur cet exercice. Les données de clôture sont transmises {isHospital ? 'à la Cour des Comptes' : 'au conseil d\'administration'} et scellées.
                   </p>
-                  <button className="btn btn-primary" style={{ background: 'var(--surface-color-light)', color: 'white', border: '1px solid var(--glass-border)' }}>Décompresser Archive PDF</button>
+                  <button onClick={() => alert('Archive PDF décompressée. Documents disponibles dans GED.')} className="btn btn-primary" style={{ background: 'var(--surface-color-light)', color: 'white', border: '1px solid var(--glass-border)' }}>Décompresser Archive PDF</button>
                 </div>
               )}
 

@@ -32,7 +32,7 @@ const PreparationBudget: React.FC = () => {
           <button className="btn btn-icon">
             <Download size={18} />
           </button>
-          <button className="btn btn-primary">
+          <button onClick={() => alert('Nouveau scénario budgétaire What-If créé.')} className="btn btn-primary">
             <CopyPlus size={18} />
             <span>Nouveau Scénario</span>
           </button>

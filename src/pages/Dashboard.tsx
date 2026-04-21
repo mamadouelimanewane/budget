@@ -54,7 +54,7 @@ const Dashboard: React.FC = () => {
               <option value="USD" style={{ color: 'black' }}>USD ($)</option>
             </select>
           </div>
-          <button className="btn btn-primary">
+          <button onClick={() => alert('Rapport PDF en cours de génération...')} className="btn btn-primary">
             Export Rapport PDF <ChevronDown size={16} />
           </button>
         </div>
@@ -125,7 +125,7 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
           <div className="kpi-value">{engagementsEnAttente} <span style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>{isHospital ? 'dossiers' : 'demandes'}</span></div>
-          <button className="btn btn-primary" style={{ marginTop: '0.5rem', fontSize: '0.8rem', padding: '0.4rem' }}>
+          <button onClick={() => alert('Dossier ouvert pour examen et visa hiérarchique.')} className="btn btn-primary" style={{ marginTop: '0.5rem', fontSize: '0.8rem', padding: '0.4rem' }}>
             Examiner pour Visa
           </button>
         </div>
@@ -183,7 +183,7 @@ const Dashboard: React.FC = () => {
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{isHospital ? 'Plafonds de dépenses par unité médicale.' : 'Cartes de paiement plafonnées et éphémères actives pour vos équipes.'}</p>
               </div>
             </div>
-            <button className="btn" style={{ background: 'var(--success)', color: 'white', border: 'none' }}>Gérer Cartes</button>
+            <button onClick={() => alert('Module de gestion des cartes virtuelles ouvert.')} className="btn" style={{ background: 'var(--success)', color: 'white', border: 'none' }}>Gérer Cartes</button>
           </div>
 
           <div className="chart-card glass-panel" style={{ flexGrow: 1 }}>

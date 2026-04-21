@@ -73,8 +73,8 @@ const Parametres: React.FC = () => {
                 <List size={24} color="var(--primary)" /> Gestion du Plan Comptable
               </h2>
               <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-                <button className="btn btn-primary" style={{ fontSize: '0.85rem' }}>+ Nouveau Chapitre Principal</button>
-                <button className="btn" style={{ fontSize: '0.85rem', background: 'var(--surface-color-light)' }}>+ Compte Divisionnaire</button>
+                <button onClick={() => alert('Nouveau chapitre principal ajouté au plan de comptes.')} className="btn btn-primary" style={{ fontSize: '0.85rem' }}>+ Nouveau Chapitre Principal</button>
+                <button onClick={() => alert('Nouveau compte divisionnaire ajouté.')} className="btn" style={{ fontSize: '0.85rem', background: 'var(--surface-color-light)' }}>+ Compte Divisionnaire</button>
               </div>
               <table style={{ width: '100%', marginTop: '1rem' }}>
                 <thead>
@@ -90,19 +90,19 @@ const Parametres: React.FC = () => {
                     <td style={{ padding: '0.75rem' }}><span className="kpi-badge positive">Chapitre Principal</span></td>
                     <td style={{ padding: '0.75rem', fontWeight: 600 }}>Titre 2</td>
                     <td style={{ padding: '0.75rem' }}>Dépenses de Fonctionnement</td>
-                    <td style={{ padding: '0.75rem' }}><button className="btn-icon">Éditer</button></td>
+                    <td style={{ padding: '0.75rem' }}><button onClick={() => alert('Édition du chapitre activée.')} className="btn-icon">Éditer</button></td>
                   </tr>
                   <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
                     <td style={{ padding: '0.75rem 0.75rem 0.75rem 2rem' }}><span className="kpi-badge" style={{ background: 'var(--surface-color-light)' }}>Divisionnaire</span></td>
                     <td style={{ padding: '0.75rem', fontWeight: 600 }}>6111</td>
                     <td style={{ padding: '0.75rem' }}>{isHospital ? 'Achats de médicaments (Pharmacie Centrale)' : 'Achats de matières premières (Supply Chain)'}</td>
-                    <td style={{ padding: '0.75rem' }}><button className="btn-icon">Éditer</button></td>
+                    <td style={{ padding: '0.75rem' }}><button onClick={() => alert('Édition du compte activée.')} className="btn-icon">Éditer</button></td>
                   </tr>
                   <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
                     <td style={{ padding: '0.75rem 0.75rem 0.75rem 2rem' }}><span className="kpi-badge" style={{ background: 'var(--surface-color-light)' }}>Divisionnaire</span></td>
                     <td style={{ padding: '0.75rem', fontWeight: 600 }}>6112</td>
                     <td style={{ padding: '0.75rem' }}>{isHospital ? 'Achats de petit matériel médical' : 'Achats et Licences Logiciels (DSI)'}</td>
-                    <td style={{ padding: '0.75rem' }}><button className="btn-icon">Éditer</button></td>
+                    <td style={{ padding: '0.75rem' }}><button onClick={() => alert('Édition de la période activée.')} className="btn-icon">Éditer</button></td>
                   </tr>
                 </tbody>
               </table>
@@ -138,7 +138,7 @@ const Parametres: React.FC = () => {
                  <p style={{ fontSize: '0.9rem', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Selon la Règle PRC01 : L'initialisation du budget nécessite une période active.</p>
                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                    <span style={{ fontSize: '1.2rem', fontWeight: 600 }}>Période Courante : 2026</span>
-                   <button className="btn btn-primary" style={{ background: 'var(--success)', border: 'none' }}>+ Nouvelle Période</button>
+                   <button onClick={() => alert('Nouvelle période budgétaire créée.')} className="btn btn-primary" style={{ background: 'var(--success)', border: 'none' }}>+ Nouvelle Période</button>
                  </div>
               </div>
             </div>

@@ -64,7 +64,7 @@ const ReportingHub: React.FC = () => {
                     <option>Exercice 2026</option>
                     <option>Exercice 2025</option>
                  </select>
-                 <button className="btn btn-primary" style={{ fontSize: '0.8rem' }}><Search size={14} /> Appliquer</button>
+                 <button onClick={() => alert('Filtres appliqués. Rapport mis à jour.')} className="btn btn-primary" style={{ fontSize: '0.8rem' }}><Search size={14} /> Appliquer</button>
               </div>
            </div>
         </div>
@@ -107,7 +107,7 @@ const ReportingHub: React.FC = () => {
           </div>
 
           <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-             <button className="btn btn-primary" style={{ padding: '1rem 2rem', gap: '1rem' }}>
+             <button onClick={() => alert('Export en cours... Liasse_Fiscale_2026.zip téléchargé.')} className="btn btn-primary" style={{ padding: '1rem 2rem', gap: '1rem' }}>
                 <Share2 size={20} /> Exporter la Liasse Fiscale Complète (Zip)
              </button>
           </div>

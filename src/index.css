@@ -163,3 +163,50 @@ h1 {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* ── Additional demo styles ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.animate-spin { animation: spin 1s linear infinite; }
+.animate-slide-up { animation: slideUp 0.4s ease forwards; }
+.hover-scale { transition: transform 0.2s ease; cursor: pointer; }
+.hover-scale:hover { transform: scale(1.03); }
+
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+.modal-content {
+  background: var(--surface-color, #1a1f35);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 2rem;
+  min-width: 400px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+}
+
+.status-badge {
+  display: inline-flex; align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.status-completed { background: rgba(16,185,129,0.15); color: #10b981; }
+.status-rejected  { background: rgba(239,68,68,0.15);  color: #ef4444; }
+.status-pending   { background: rgba(245,158,11,0.15); color: #f59e0b; }
+.status-warning   { background: rgba(245,158,11,0.15); color: #f59e0b; }
+
+.kpi-badge { display: inline-flex; align-items: center; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+.kpi-badge.positive { background: rgba(16,185,129,0.15); color: #10b981; }
+.kpi-badge.negative { background: rgba(239,68,68,0.15);  color: #ef4444; }
+.kpi-badge.warning  { background: rgba(245,158,11,0.15); color: #f59e0b; }
+
+.warning { color: var(--warning, #f59e0b) !important; }

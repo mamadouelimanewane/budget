@@ -92,7 +92,7 @@ const CostOptimizer: React.FC = () => {
                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Économie Estimée</div>
                    <div style={{ fontWeight: 700, fontSize: '1.25rem', color: 'var(--success)' }}>-{rec.potentialSaving.toLocaleString()} FCFA</div>
                  </div>
-                 <button className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+                 <button onClick={() => alert('Plan d\'optimisation appliqué. 3 DBM générées automatiquement.')} className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
                     Appliquer le Plan
                  </button>
                </div>

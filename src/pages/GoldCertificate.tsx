@@ -14,8 +14,8 @@ const GoldCertificate: React.FC = () => {
           <p>Certification institutionnelle de gestion souveraine et d'intégrité budgétaire.</p>
         </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
-           <button className="btn btn-icon"><Share2 size={18} /></button>
-           <button className="btn btn-primary"><Download size={18} /> Télécharger Certificat</button>
+           <button onClick={() => alert('Certificat Gold téléchargé : Certificat_SIGB_Gold_2026.pdf')} className="btn btn-icon"><Share2 size={18} /></button>
+           <button onClick={() => alert('Certificat Gold téléchargé : Certificat_SIGB_Gold_2026.pdf')} className="btn btn-primary"><Download size={18} /> Télécharger Certificat</button>
         </div>
       </div>
 

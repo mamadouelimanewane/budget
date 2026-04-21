@@ -138,14 +138,14 @@ const IAReportsPage: React.FC = () => {
               </div>
 
               <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
-                <button className="btn" style={{ background: 'var(--surface-color-light)', color: 'white' }}>
+                <button onClick={() => alert('Éditeur de texte IA ouvert.')} className="btn" style={{ background: 'var(--surface-color-light)', color: 'white' }}>
                   <span style={{ fontSize: '1.1rem' }}>Éditer le texte</span>
                 </button>
-                <button className="btn btn-primary">
+                <button onClick={() => alert('Export Word en cours... Rapport_IA_2026.docx généré.')} className="btn btn-primary">
                   <Download size={18} />
                   Exporter au format Word
                 </button>
-                <button className="btn btn-primary" style={{ background: 'var(--success)' }}>
+                <button onClick={() => alert('Document envoyé pour signature électronique eIDAS.')} className="btn btn-primary" style={{ background: 'var(--success)' }}>
                   <Send size={18} />
                   Diffuser (Signature)
                 </button>

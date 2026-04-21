@@ -59,7 +59,7 @@ const AuditPage: React.FC = () => {
               <Mail size={20} />
             </div>
           </div>
-          <button className="btn btn-primary" style={{ marginTop: '0.5rem', fontSize: '0.85rem', padding: '0.5rem' }}>
+          <button onClick={() => alert('Campagne d\'audit lancée. Rapport disponible dans 24h.')} className="btn btn-primary" style={{ marginTop: '0.5rem', fontSize: '0.85rem', padding: '0.5rem' }}>
             Lancer Campagne
           </button>
         </div>

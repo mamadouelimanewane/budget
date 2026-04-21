@@ -12,7 +12,7 @@ const Connectors: React.FC = () => {
           <h1>Hub d'Interopérabilité Souverain</h1>
           <p>Gestion des passerelles API avec les systèmes externes (Trésor, Banques, RH, etc.).</p>
         </div>
-        <button className="btn btn-primary">
+        <button onClick={() => alert('Assistant de configuration de connecteur ouvert.')} className="btn btn-primary">
           <Plus size={18} /> Nouveau Connecteur
         </button>
       </div>

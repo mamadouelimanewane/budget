@@ -186,7 +186,7 @@ const RecettesPage: React.FC = () => {
               <input type="number" value={montant} onChange={e => setMontant(e.target.value)} required min={1} style={{ width: '100%', padding: '0.75rem', background: 'var(--surface-color-light)', border: '1px solid var(--glass-border)', color: 'white', borderRadius: '4px' }} />
             </div>
           </div>
-          <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', width: '100%' }}>Créer la recette</button>
+          <button onClick={() => alert('Recette créée et enregistrée dans le système.')} type="submit" className="btn btn-primary" style={{ marginTop: '1rem', width: '100%' }}>Créer la recette</button>
         </form>
       </Modal>
     </div>

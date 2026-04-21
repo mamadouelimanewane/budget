@@ -107,7 +107,7 @@ const DeepMindCore: React.FC = () => {
                   alignItems: 'center'
                 }}>
                   <div style={{ fontSize: '0.95rem', fontWeight: 500 }}>{rec}</div>
-                  <button className="btn btn-primary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem' }}>Générer DBM</button>
+                  <button onClick={() => alert('DBM générée automatiquement par l\'IA et soumise au circuit d\'approbation.')} className="btn btn-primary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem' }}>Générer DBM</button>
                 </div>
               ))}
 
@@ -147,7 +147,7 @@ const DeepMindCore: React.FC = () => {
             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Autonomie Stratégique</div>
          </div>
       </div>
-    </div>
+  </div>
   );
 };
 

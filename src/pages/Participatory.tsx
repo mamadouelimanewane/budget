@@ -61,7 +61,7 @@ const Participatory: React.FC = () => {
               />
             </div>
             <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-              <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Lancer au Vote</button>
+              <button onClick={() => alert('Budget participatif lancé au vote. Notifications envoyées aux parties prenantes.')} type="submit" className="btn btn-primary" style={{ width: '100%' }}>Lancer au Vote</button>
             </div>
           </form>
         </div>
