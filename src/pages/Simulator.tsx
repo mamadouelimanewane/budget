@@ -105,7 +105,7 @@ const Simulator: React.FC = () => {
                     </div>
                  </div>
                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <button className="btn btn-icon" style={{ background: 'var(--primary-light)' }}><Play size={16} /></button>
+                    <button className="btn btn-icon" onClick={() => alert("Scénario comparé — différences affichées.")} style={{ background: 'var(--primary-light)' }}><Play size={16} /></button>
                     <button className="btn btn-icon" onClick={() => deleteScenario(scn.id)} style={{ color: 'var(--danger)' }}><Trash2 size={16} /></button>
                  </div>
                </div>

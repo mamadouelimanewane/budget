@@ -41,7 +41,7 @@ const RecettesPage: React.FC = () => {
           <p>Saisie, classification et suivi de recouvrement</p>
         </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
-          <button className="btn btn-icon">
+          <button className="btn btn-icon" onClick={() => alert("Export Excel des recettes : Recettes_2026.xlsx généré.")} title="Exporter">
             <Download size={18} />
           </button>
           <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>
@@ -96,7 +96,7 @@ const RecettesPage: React.FC = () => {
             <Search size={18} />
             <input type="text" placeholder="Rechercher une recette par titre, source ou compte..." />
           </div>
-          <button className="btn btn-icon">
+          <button className="btn btn-icon" onClick={() => alert("Filtres recettes appliqués.")} title="Filtrer">
             <Filter size={18} />
           </button>
         </div>

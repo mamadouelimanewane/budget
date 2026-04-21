@@ -112,8 +112,8 @@ const SecurityHunter: React.FC = () => {
                   </td>
                   <td style={{ padding: '1.25rem 1rem' }}>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      <button className="btn-icon" title="Ouvrir le dossier"><Eye size={16} /></button>
-                      <button className="btn-icon" title="Notifier Responsable"><Mail size={16} /></button>
+                      <button className="btn-icon" title="Ouvrir le dossier" onClick={() => alert("Dossier d'anomalie ouvert — détail complet disponible.")}><Eye size={16} /></button>
+                      <button className="btn-icon" title="Notifier Responsable" onClick={() => alert("Notification envoyée au responsable concerné via messagerie sécurisée.")}><Mail size={16} /></button>
                     </div>
                   </td>
                 </tr>

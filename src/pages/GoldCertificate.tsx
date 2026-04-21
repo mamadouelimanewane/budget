@@ -109,7 +109,7 @@ const GoldCertificate: React.FC = () => {
       </div>
 
       <div style={{ marginTop: '3rem', display: 'flex', gap: '2rem' }}>
-         <button className="btn btn-icon" style={{ gap: '0.5rem', padding: '0.75rem 1.5rem' }}><Printer size={18} /> Imprimer l'original</button>
+         <button className="btn btn-icon" onClick={() => alert("Certificat Gold envoyé à l'imprimante sécurisée.")} style={{ gap: '0.5rem', padding: '0.75rem 1.5rem' }}><Printer size={18} /> Imprimer l'original</button>
       </div>
 
     </div>

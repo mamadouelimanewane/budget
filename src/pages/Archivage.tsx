@@ -2,9 +2,12 @@ import React from 'react';
 import { Archive, Search, Filter, HardDrive, DownloadCloud, FileLock2, Info } from 'lucide-react';
 
 const archives = [
-  { id: 'ARC-2024-C', vol: 'Comptes de Gestion 2024', size: '1.2 GB', docs: 4520, hash: 'a8f4c...9d2e', status: 'Scellé (eIDAS)' },
-  { id: 'ARC-2023-C', vol: 'Comptes de Gestion 2023', size: '1.0 GB', docs: 3980, hash: 'b11dc...4f2a', status: 'Scellé (eIDAS)' },
-  { id: 'ARC-2022-C', vol: 'Comptes de Gestion 2022', size: '980 MB', docs: 3100, hash: '88cda...1v3w', status: 'Long Terme (>3 ans)' },
+  { id: 'ARC-2025-C', vol: 'Comptes de Gestion 2025 — Exercice Clos',    size: '1.4 GB', docs: 5120, hash: 'f9a3d...7c1b', status: 'Scellé (eIDAS)' },
+  { id: 'ARC-2024-C', vol: 'Comptes de Gestion 2024',                     size: '1.2 GB', docs: 4520, hash: 'a8f4c...9d2e', status: 'Scellé (eIDAS)' },
+  { id: 'ARC-2024-Q', vol: 'Rapports Trimestriels 2024 (Q1-Q4)',           size: '340 MB', docs: 980,  hash: 'c4e1a...0b8f', status: 'Scellé (eIDAS)' },
+  { id: 'ARC-2023-C', vol: 'Comptes de Gestion 2023',                     size: '1.0 GB', docs: 3980, hash: 'b11dc...4f2a', status: 'Scellé (eIDAS)' },
+  { id: 'ARC-2022-C', vol: 'Comptes de Gestion 2022',                     size: '980 MB', docs: 3100, hash: '88cda...1v3w', status: 'Long Terme (>3 ans)' },
+  { id: 'ARC-2021-C', vol: 'Comptes de Gestion 2021',                     size: '870 MB', docs: 2840, hash: '22fab...9c3d', status: 'Long Terme (>3 ans)' },
 ];
 
 const ArchivagePage: React.FC = () => {
@@ -46,7 +49,7 @@ const ArchivagePage: React.FC = () => {
             <Search size={18} />
             <input type="text" placeholder="Recherche e-Discovery (full-text) dans les archives..." />
           </div>
-          <button className="btn btn-icon">
+          <button className="btn btn-icon" onClick={() => alert("Archive téléchargée.")} title="Télécharger">
             <Filter size={18} />
           </button>
         </div>
@@ -79,10 +82,10 @@ const ArchivagePage: React.FC = () => {
                   </td>
                   <td>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      <button className="btn-icon" title="Audit du sceau" style={{ color: 'var(--text-main)' }}>
+                      <button className="btn-icon" title="Audit du sceau" onClick={() => alert("Audit du sceau eIDAS : Intégrité vérifiée — Hash SHA-256 conforme.")} style={{ color: 'var(--text-main)' }}>
                         <Info size={16} />
                       </button>
-                      <button className="btn-icon" title="Requêter Archive" style={{ color: 'var(--primary)' }}>
+                      <button className="btn-icon" title="Requêter Archive" onClick={() => alert("Interface de requête SQL sur archive ouverte.")} style={{ color: 'var(--primary)' }}>
                         <DownloadCloud size={16} />
                       </button>
                     </div>

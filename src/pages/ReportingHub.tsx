@@ -98,9 +98,9 @@ const ReportingHub: React.FC = () => {
                  </div>
 
                  <div style={{ display: 'flex', gap: '1rem' }}>
-                    <button className="btn btn-icon" title="Aperçu"><Eye size={18} /></button>
-                    <button className="btn btn-icon" title="Exporter PDF"><Download size={18} /></button>
-                    <button className="btn btn-icon" title="Imprimer"><Printer size={18} /></button>
+                    <button className="btn btn-icon" title="Aperçu" onClick={() => alert("Aperçu du rapport généré — visualisation en cours.")}><Eye size={18} /></button>
+                    <button className="btn btn-icon" title="Exporter PDF" onClick={() => alert("Rapport exporté en PDF — Rapport_360_Avril2026.pdf téléchargé.")}><Download size={18} /></button>
+                    <button className="btn btn-icon" title="Imprimer" onClick={() => alert("Envoi vers imprimante — impression en cours.")}><Printer size={18} /></button>
                  </div>
               </div>
             ))}

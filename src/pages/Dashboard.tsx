@@ -148,7 +148,7 @@ const Dashboard: React.FC = () => {
         <div className="chart-card glass-panel">
           <div className="chart-header">
             <h3>Suivi des Lignes Budgétaires</h3>
-            <button className="btn btn-icon"><BarChart2 size={18} /></button>
+            <button className="btn btn-icon" onClick={() => alert("Graphique étendu — vue détaillée des lignes budgétaires.")} title="Voir plus"><BarChart2 size={18} /></button>
           </div>
           <div className="chart-container" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', justifyContent: 'center' }}>
             {budgetLines.map(line => {

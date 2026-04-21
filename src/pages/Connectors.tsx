@@ -57,7 +57,7 @@ const Connectors: React.FC = () => {
                     </div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Ping: 42ms</div>
                   </div>
-                  <button className="btn-icon">
+                  <button className="btn-icon" onClick={() => alert("Test de connexion en cours...")} title="Tester connexion">
                     <RefreshCw size={18} />
                   </button>
                 </div>
@@ -79,7 +79,7 @@ const Connectors: React.FC = () => {
                    <input type="password" value="sk-séb-5512-xxxx-xxxx" readOnly 
                      style={{ flex: 1, padding: '0.5rem', background: 'var(--surface-color)', border: '1px solid var(--glass-border)', color: 'white', borderRadius: '4px' }}
                    />
-                   <button className="btn btn-icon" style={{ padding: '0.5rem' }}><RefreshCw size={16} /></button>
+                   <button className="btn btn-icon" onClick={() => alert("Connecteur synchronisé avec succès.")} style={{ padding: '0.5rem' }}><RefreshCw size={16} /></button>
                  </div>
                </div>
                <div>

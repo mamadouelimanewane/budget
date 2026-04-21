@@ -22,7 +22,7 @@ const AuditPage: React.FC = () => {
           <p>Journal immutable des opérations et traçabilité pour les corps de contrôle {isHospital ? '(IGF/CENTIF)' : '(CAC / Audit Interne)'}</p>
         </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
-          <button className="btn btn-icon">
+          <button className="btn btn-icon" title="Exporter le journal" onClick={() => alert("Journal d'audit exporté : Journal_Audit_Complet_2026.xlsx")}>
             <Download size={18} />
           </button>
         </div>
@@ -75,7 +75,7 @@ const AuditPage: React.FC = () => {
               <Search size={18} />
               <input type="text" placeholder="Tracer par ID Acte, User ou IP..." />
             </div>
-            <button className="btn btn-icon">
+            <button className="btn btn-icon" title="Filtrer" onClick={() => alert("Filtres appliqués sur le journal d'audit.")}>
               <Filter size={18} />
             </button>
           </div>

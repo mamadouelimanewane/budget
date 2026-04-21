@@ -44,7 +44,7 @@ const DBMPage: React.FC = () => {
             <Search size={18} />
             <input type="text" placeholder="Rechercher une DBM..." />
           </div>
-          <button className="btn btn-icon">
+          <button className="btn btn-icon" onClick={() => alert("Filtres DBM appliqués.")} title="Filtrer">
             <Filter size={18} />
           </button>
         </div>

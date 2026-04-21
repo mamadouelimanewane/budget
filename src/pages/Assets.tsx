@@ -112,8 +112,8 @@ const Assets: React.FC = () => {
                 <td style={{ color: 'var(--success)', fontWeight: 700 }}>{calculateAmortization(asset).toLocaleString()} FCFA</td>
                 <td>
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <button className="btn-icon" title="Historique Maintenance"><History size={16} /></button>
-                    <button className="btn-icon" style={{ color: 'var(--primary)' }} title="Certificat"><Download size={16} /></button>
+                    <button className="btn-icon" title="Historique Maintenance" onClick={() => alert("Historique complet des maintenances de cet actif affiché.")}><History size={16} /></button>
+                    <button className="btn-icon" style={{ color: 'var(--primary)' }} title="Certificat" onClick={() => alert("Certificat d'immatriculation de l'actif téléchargé.")}><Download size={16} /></button>
                   </div>
                 </td>
               </tr>

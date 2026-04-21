@@ -225,7 +225,7 @@ const ImportDocument: React.FC = () => {
                   </td>
                   <td>
                     {doc.status === 'scanning' ? (
-                       <button className="btn-icon" style={{ color: 'var(--primary)' }} onClick={() => triggerFakeAnalysisCompleter(doc.id, doc.fileName)} title="Simuler Fin Analyse">
+                       <button className="btn-icon" onClick={() => triggerFakeAnalysisCompleter(doc.id, doc.fileName)} style={{ color: 'var(--primary)' }} title="Simuler Fin Analyse">
                          <Sparkles size={16} />
                        </button>
                     ) : (
@@ -235,7 +235,7 @@ const ImportDocument: React.FC = () => {
                                  style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem', background: 'var(--primary)', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
                             Intégrer
                          </button>
-                         <button className="btn-icon" style={{ color: 'var(--success)' }}>
+                         <button className="btn-icon" onClick={() => alert("Document validé et intégré dans la GED.")} title="Valider" style={{ color: 'var(--success)' }}>
                            <CheckCircle size={16} />
                          </button>
                        </div>

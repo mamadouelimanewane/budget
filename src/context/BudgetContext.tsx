@@ -92,7 +92,7 @@ export interface Connector {
   name: string;
   status: 'connected' | 'error' | 'disconnected';
   lastSync: string;
-  type: 'bank' | 'treasury' | 'hr';
+  type: 'bank' | 'treasury' | 'hr' | 'erp' | 'payment' | 'procurement';
 }
 
 export interface WorkflowStep {
@@ -186,7 +186,12 @@ const BudgetContext = createContext<BudgetContextType | undefined>(undefined);
 export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) => {
   const [industryMode, setIndustryMode] = useState<'hospitalier' | 'entreprise'>('entreprise');
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([
-    { id: 'LOG-88231', timestamp: new Date().toISOString(), user: 'Mamadou Dia (DSI)', action: 'CONNEXION_SSO', module: 'Auth', detail: 'Authentification via SAML 2.0 réussie', ip: '197.214.23.11' }
+    { id: 'LOG-88236', timestamp: new Date().toISOString(), user: 'Mamadou Dia (DSI)', action: 'EXPORT_RAPPORT', module: 'Reporting', detail: 'Export PDF Rapport Trimestriel Q1-2026 généré', ip: '197.214.23.11' },
+    { id: 'LOG-88235', timestamp: new Date(Date.now()-3600000).toISOString(), user: 'Aissatou Fall (DAF)', action: 'APPROBATION_DBM', module: 'DBM', detail: 'DBM-2026-004 approuvée — transfert 5 000 000 FCFA vers ligne 614', ip: '197.214.23.45' },
+    { id: 'LOG-88234', timestamp: new Date(Date.now()-7200000).toISOString(), user: 'Ibrahima Sow (CF)', action: 'CREATION_ENGAGEMENT', module: 'Engagements', detail: 'Engagement ENG-2026-090 créé — Oracle Licences 25 000 000 FCFA', ip: '197.214.23.78' },
+    { id: 'LOG-88233', timestamp: new Date(Date.now()-10800000).toISOString(), user: 'Système IA', action: 'DETECTION_ANOMALIE', module: 'Sécurité', detail: 'Anomalie budgétaire détectée sur ligne 623 — dépassement 15%', ip: 'SYSTEM' },
+    { id: 'LOG-88232', timestamp: new Date(Date.now()-18000000).toISOString(), user: 'Fatou Diop (DRH)', action: 'IMPORT_DOCUMENT', module: 'GED', detail: 'Facture Senelec_Avr2026.pdf importée et analysée par OCR-IA', ip: '197.214.23.92' },
+    { id: 'LOG-88231', timestamp: new Date(Date.now()-86400000).toISOString(), user: 'Mamadou Dia (DSI)', action: 'CONNEXION_SSO', module: 'Auth', detail: 'Authentification via SAML 2.0 réussie depuis Dakar, SN', ip: '197.214.23.11' }
   ]);
 
   const [workflowSteps, setWorkflowSteps] = useState<WorkflowStep[]>([
@@ -211,8 +216,13 @@ export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) =>
   ]);
 
   const [connectors, setConnectors] = useState<Connector[]>([
-    { id: 'CON-1', name: 'Banque Centrale / Trésor', status: 'connected', lastSync: '13/04/2026 09:00', type: 'treasury' },
-    { id: 'CON-2', name: 'Système Paie (HR-Pro)', status: 'disconnected', lastSync: '10/04/2026 18:30', type: 'hr' }
+    { id: 'CON-1', name: 'Banque Centrale / Trésor (BCEAO)', status: 'connected', lastSync: '21/04/2026 08:30', type: 'treasury' },
+    { id: 'CON-2', name: 'SIGFIP — Trésor Public', status: 'connected', lastSync: '21/04/2026 07:00', type: 'treasury' },
+    { id: 'CON-3', name: 'Système Paie SIGRHAP', status: 'disconnected', lastSync: '10/04/2026 18:30', type: 'hr' },
+    { id: 'CON-4', name: 'ERP SAP Finance', status: 'connected', lastSync: '20/04/2026 22:00', type: 'erp' },
+    { id: 'CON-5', name: 'Wave — Mobile Money', status: 'connected', lastSync: '21/04/2026 09:15', type: 'payment' },
+    { id: 'CON-6', name: 'Orange Money Sénégal', status: 'connected', lastSync: '21/04/2026 09:15', type: 'payment' },
+    { id: 'CON-7', name: 'DCMP — Marchés Publics', status: 'disconnected', lastSync: '15/04/2026 14:00', type: 'procurement' }
   ]);
 
   const [proposals, setProposals] = useState<BudgetProposal[]>([
@@ -299,16 +309,38 @@ export const BudgetProvider: React.FC<{children: ReactNode}> = ({ children }) =>
   };
 
   const [budgetLines, setBudgetLines] = useState<BudgetLine[]>([
-    { id: '1', ref: '611', desc: 'Achat de matières et fournitures', n2: 12000000, n1: 14500000, n: 15000000, n1p: 16500000 },
-    { id: '2', ref: '612', desc: 'Frais de télécommunications', n2: 5000000, n1: 5800000, n: 6000000, n1p: 7200000 },
+    { id: '1',  ref: '611', desc: 'Achat de matières et fournitures',       n2: 12000000, n1: 14500000, n: 15000000, n1p: 16500000 },
+    { id: '2',  ref: '612', desc: 'Frais de télécommunications',             n2: 5000000,  n1: 5800000,  n: 6000000,  n1p: 7200000  },
+    { id: '3',  ref: '613', desc: 'Eau, électricité et énergie (Senelec)',   n2: 8500000,  n1: 9200000,  n: 9800000,  n1p: 10500000 },
+    { id: '4',  ref: '614', desc: 'Entretien, réparations et maintenance',   n2: 3200000,  n1: 3800000,  n: 4000000,  n1p: 4500000  },
+    { id: '5',  ref: '621', desc: 'Personnel permanent — salaires',          n2: 95000000, n1: 102000000,n: 108000000,n1p: 115000000 },
+    { id: '6',  ref: '622', desc: 'Charges sociales et cotisations IPRES',   n2: 18000000, n1: 19500000, n: 21000000, n1p: 23000000 },
+    { id: '7',  ref: '631', desc: 'Honoraires consultants et experts',       n2: 7500000,  n1: 9000000,  n: 10000000, n1p: 12000000 },
+    { id: '8',  ref: '641', desc: 'Licences logicielles et SaaS',            n2: 11000000, n1: 13500000, n: 15000000, n1p: 18000000 },
+    { id: '9',  ref: '651', desc: 'Missions et déplacements professionnels', n2: 4200000,  n1: 5000000,  n: 5500000,  n1p: 6000000  },
+    { id: '10', ref: '661', desc: 'Investissements équipements informatiques',n2: 22000000, n1: 28000000, n: 30000000, n1p: 35000000 },
   ]);
 
   const [engagements, setEngagements] = useState<Engagement[]>([
-    { id: 'ENG-2026-089', obj: 'Renouvellement Licences Oracle', service: 'DSI', amt: 25000000, budg: '614 - Entretien et réparations', stat: 'besoin', date: '12 Avr 2026' }
+    { id: 'ENG-2026-089', obj: 'Renouvellement Licences Oracle Enterprise', service: 'DSI',           amt: 25000000, budg: '641 - Licences logicielles et SaaS',           stat: 'besoin',   date: '12 Avr 2026' },
+    { id: 'ENG-2026-088', obj: 'Maintenance Groupe Électrogène Bâtiment A',  service: 'Services Techniques', amt: 4800000,  budg: '614 - Entretien et réparations',           stat: 'visa',     date: '10 Avr 2026' },
+    { id: 'ENG-2026-087', obj: 'Formation SAP Finance — 12 agents DAF',      service: 'DRH',             amt: 7500000,  budg: '631 - Honoraires consultants et experts',   stat: 'approved', date: '08 Avr 2026' },
+    { id: 'ENG-2026-086', obj: 'Acquisition véhicule de liaison Dakar-Thiès',service: 'Logistique',      amt: 18000000, budg: '661 - Investissements équipements',          stat: 'commande', date: '05 Avr 2026' },
+    { id: 'ENG-2026-085', obj: 'Abonnement Microsoft 365 Business Premium',  service: 'DSI',             amt: 3600000,  budg: '641 - Licences logicielles et SaaS',           stat: 'paye',     date: '01 Avr 2026' },
   ]);
 
-  const [dbms, setDbms] = useState<DBM[]>([]);
-  const [recettes, setRecettes] = useState<Recette[]>([]);
+  const [dbms, setDbms] = useState<DBM[]>([
+    { id: 'DBM-2026-004', sourceLine: '651 - Missions et déplacements', targetLine: '631 - Honoraires consultants', amt: 2500000, motif: 'Redéploiement suite annulation mission Abidjan — financement formation SYSCOHADA', stat: 'approved', date: '15 Avr 2026' },
+    { id: 'DBM-2026-003', sourceLine: '611 - Achat de matières',         targetLine: '614 - Entretien et réparations', amt: 1200000, motif: 'Réaffectation pour maintenance urgente groupe électrogène Bâtiment B', stat: 'approved', date: '10 Avr 2026' },
+    { id: 'DBM-2026-002', sourceLine: '641 - Licences SaaS',             targetLine: '661 - Investissements',          amt: 5000000, motif: 'Transfert pour acquisition serveur NAS backup après incident Data Center', stat: 'pending',  date: '20 Avr 2026' },
+  ]);
+  const [recettes, setRecettes] = useState<Recette[]>([
+    { id: 'REC-2026-012', titre: 'Subvention État — Budget Fonctionnement T2',  source: 'Trésor Public',     compte: '741', montant: 85000000, stat: 'encaisse',     date: '01 Avr 2026' },
+    { id: 'REC-2026-011', titre: 'Convention Banque Mondiale — Projet SGDS',     source: 'Banque Mondiale',   compte: '744', montant: 120000000,stat: 'previsionnel', date: '15 Mar 2026' },
+    { id: 'REC-2026-010', titre: 'Recettes propres — Prestations de services',   source: 'Fonds propres',     compte: '701', montant: 12500000, stat: 'encaisse',     date: '28 Mar 2026' },
+    { id: 'REC-2026-009', titre: 'Don AFD — Modernisation Infrastructure SI',    source: 'AFD France',        compte: '744', montant: 75000000, stat: 'retard',       date: '01 Fév 2026' },
+    { id: 'REC-2026-008', titre: 'Subvention BAD — Renforcement des Capacités',  source: 'BAD',               compte: '744', montant: 45000000, stat: 'previsionnel', date: '01 Jun 2026' },
+  ]);
   
   const [documents, setDocuments] = useState<DocumentGED[]>([
     { id: 'DOC-1234', fileName: 'Facture_Senelec_0426.pdf', type: 'PDF', size: '2.4 MB', uploadDate: '10 Avr 2026', status: 'analyzed', extractedData: 'Montant: 4,500,000 FCFA | Identifié Ligne: 613', relatedModule: 'Factures & Paiements' },

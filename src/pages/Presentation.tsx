@@ -108,8 +108,8 @@ const Presentation: React.FC = () => {
             <h2 style={{ margin: 0, fontSize: '1.1rem' }}>Board Presentation Mode <span style={{ opacity: 0.4, fontWeight: 400 }}>v2.5</span></h2>
           </div>
           <div style={{ display: 'flex', gap: '1rem' }}>
-             <button className="btn btn-icon" title="Exporter en PPTX"><Download size={18} /></button>
-             <button className="btn btn-icon" title="Partager Lien Sécurisé"><Share2 size={18} /></button>
+             <button className="btn btn-icon" title="Exporter en PPTX" onClick={() => alert("Présentation exportée : Board_Presentation_SIGB_2026.pptx")}><Download size={18} /></button>
+             <button className="btn btn-icon" title="Partager Lien Sécurisé" onClick={() => alert("Lien sécurisé généré et copié dans le presse-papier.")}><Share2 size={18} /></button>
           </div>
         </div>
       </div>

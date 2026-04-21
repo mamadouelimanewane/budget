@@ -22,8 +22,8 @@ const FinancialGraph: React.FC = () => {
           <p>Cartographie neuronale des interdépendances entre services, lignes budgétaires et recettes.</p>
         </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
-           <button className="btn btn-icon"><Layers size={18} /></button>
-           <button className="btn btn-icon"><Maximize2 size={18} /></button>
+           <button className="btn btn-icon" title="Changer de vue" onClick={() => alert("Vue multicouche activée — affichage des flux par niveau hiérarchique.")}><Layers size={18} /></button>
+           <button className="btn btn-icon" title="Plein écran" onClick={() => alert("Mode plein écran activé pour le Knowledge Graph.")}><Maximize2 size={18} /></button>
         </div>
       </div>
 

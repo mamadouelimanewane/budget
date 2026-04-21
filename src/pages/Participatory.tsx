@@ -105,7 +105,7 @@ const Participatory: React.FC = () => {
               <button className="btn btn-primary" onClick={() => voteProposal(prop.id)} style={{ flex: 1, gap: '0.5rem' }}>
                 <ThumbsUp size={16} /> Voter (+1)
               </button>
-              <button className="btn btn-icon" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <button className="btn btn-icon" onClick={() => alert("Proposition rejetée.")} style={{ background: 'rgba(255,255,255,0.05)' }}>
                 <MessageCircle size={18} />
               </button>
             </div>

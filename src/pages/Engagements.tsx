@@ -83,7 +83,7 @@ const Engagements: React.FC = () => {
             <Search size={18} />
             <input type="text" placeholder="Rechercher par objet, ID ou service..." />
           </div>
-          <button className="btn btn-icon">
+          <button className="btn btn-icon" onClick={() => alert("Filtres engagements appliqués.")} title="Filtrer">
             <Filter size={18} />
           </button>
         </div>
@@ -137,7 +137,7 @@ const Engagements: React.FC = () => {
                           <XCircle size={16} />
                         </button>
                       )}
-                      <button className="btn-icon" title="Voir détails">
+                      <button className="btn-icon" title="Voir détails" onClick={() => alert("Détail complet de l'engagement et historique des visas.")}>
                         <Receipt size={16} />
                       </button>
                     </div>

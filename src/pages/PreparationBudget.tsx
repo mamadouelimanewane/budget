@@ -26,11 +26,11 @@ const PreparationBudget: React.FC = () => {
           <p>Saisie multi-exercices et simulations (What-If)</p>
         </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
-          <button className="btn btn-icon">
-            <Upload size={18} />
+          <button className="btn btn-icon" onClick={() => alert("Import Excel du budget — fichier chargé.")} title="Importer Excel">
+          <Upload size={18} />
           </button>
-          <button className="btn btn-icon">
-            <Download size={18} />
+          <button className="btn btn-icon" onClick={() => alert("Budget N+1 exporté : Budget_Previsionnel_2027.xlsx")} title="Exporter Excel">
+          <Download size={18} />
           </button>
           <button onClick={() => alert('Nouveau scénario budgétaire What-If créé.')} className="btn btn-primary">
             <CopyPlus size={18} />
@@ -46,8 +46,7 @@ const PreparationBudget: React.FC = () => {
               <Search size={18} />
               <input type="text" placeholder="Rechercher une ligne budgétaire (ex: 611)..." />
             </div>
-            <button className="btn btn-icon">
-              <Filter size={18} />
+            <button className="btn btn-icon" onClick={() => alert("Recherche dans les lignes budgétaires.")} title="Rechercher"><Filter size={18} />
             </button>
           </div>
           <div>
