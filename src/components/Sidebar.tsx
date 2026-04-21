@@ -28,7 +28,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
 
       <nav className="nav-menu">
 
-        {/* 1. BUDGET & ARBITRAGE */}
+        {/* ═══ 1. BUDGET & ARBITRAGE ═══ */}
         <div className="nav-group">
           <div className="nav-group-title">Budget & Arbitrage</div>
           <a onClick={() => setActiveTab('preparation')} className={`nav-item ${activeTab === 'preparation' ? 'active' : ''}`}>
@@ -45,7 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
           </a>
         </div>
 
-        {/* 2. DÉPENSES & PATRIMOINE */}
+        {/* ═══ 2. DÉPENSES & PATRIMOINE ═══ */}
         <div className="nav-group">
           <div className="nav-group-title">Dépenses & Patrimoine</div>
           <a onClick={() => setActiveTab('engagements')} className={`nav-item ${activeTab === 'engagements' ? 'active' : ''}`}>
